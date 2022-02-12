@@ -1,0 +1,328 @@
+/* Home.html CSS Styling */
+/* Importing Poppins font from google */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+/* 
+CSS Variables (:root)
+allows us to change the colors onetime instead
+of changing each individual item
+*/
+
+:root {
+  --clr-background: #333645;
+  --clr-white: #ffffff;
+  --clr-red-accent: #f8646c;
+  --clr-background-accent-light: #424556;
+  --clr-card-design: #72778f;
+  --clr-main-p-font: #cdced1;
+  --transition: all 0.3s ease-in-out;
+  --border-radius: 8px;
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--clr-background);
+  font-family: "Poppins", sans-serif;
+  color: var(--clr-white);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1em;
+}
+/* 
+Three.js
+Loading the 3D Model
+*/
+.webgl {
+  width: 100%;
+  outline: none;
+}
+#model {
+  width: 100%;
+}
+
+/* 
+Header and Navigation bar
+*/
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+/* Place website tile and navigation in one column */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+/* All 3 bars in mobile view */
+.hamburger {
+  display: none;
+}
+.hamburger:hover {
+  transform: scale(1.1);
+}
+/* each individual bar */
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: var(--transition);
+  background-color: var(--clr-white);
+}
+/* Make the three menu links in a row instead of column */
+.nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-item {
+  margin-left: 4rem;
+}
+/* styling the three links */
+.nav-link {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
+  color: var(--clr-white);
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+/* styling the register link */
+.register {
+  background-color: var(--clr-red-accent);
+  padding: 0.5em;
+}
+/* styling the Log in link */
+.login {
+  border: 1px solid var(--clr-red-accent);
+  padding: 0.5em 1.5em;
+}
+/* Website Title */
+.nav-logo {
+  color: var(--clr-white);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
+/* Main section */
+.main-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+}
+.main-section h1 {
+  font-size: clamp(1.6rem, 2.5vw, 3.5rem);
+  font-weight: 600;
+}
+.main-section p {
+  font-size: clamp(0.9rem, 1vw, 1.375rem);
+  color: var(--clr-main-p-font);
+}
+.right-col img {
+  margin-left: 4rem;
+  width: clamp(350px, 20vw, 650px);
+}
+.right-col {
+  margin-left: 4rem;
+}
+/* Display types of users */
+.users {
+  margin-top: 5rem;
+  display: grid;
+  /* gap: 1em; */
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "student teacher admin stat";
+  justify-items: center;
+}
+.user-child {
+  display: grid;
+  place-items: center;
+  width: 165px;
+  height: 142px;
+  background-color: var(--clr-background-accent-light);
+}
+.users p {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 700;
+}
+/* Set the grid areas */
+.student {
+  grid-area: student;
+}
+.teacher {
+  grid-area: teacher;
+}
+.admin {
+  grid-area: admin;
+}
+.stat {
+  grid-area: stat;
+}
+/* Services Section Heading */
+.services {
+  margin-top: 5rem;
+  background-color: var(--clr-background-accent-light);
+}
+.heading {
+  margin-top: 3rem;
+}
+.services .heading h1 {
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  margin-bottom: 0.5em;
+}
+.registerSer {
+  background-color: var(--clr-red-accent);
+  padding: 0.3em;
+}
+/* Services Section 3 Cards */
+.cards {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+}
+.card-child {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background-color: var(--clr-card-design);
+  border-radius: var(--border-radius);
+  width: 260px;
+  min-height: 340px;
+  padding: 2rem;
+}
+.card-child h1 {
+  font-size: 26px;
+}
+.card-child p {
+  font-size: 18px;
+  color: var(--clr-background);
+}
+.more-info {
+  background-color: var(--clr-background);
+  padding: 0.3em 0.8em;
+  border-radius: var(--border-radius);
+}
+/* Footer Section */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--clr-background-accent-light);
+  padding: 3rem;
+  margin-top: 6rem;
+}
+footer img {
+  margin-right: 0.5em;
+}
+footer p {
+  font-size: clamp(1rem, 1vw, 1.325rem);
+}
+/* Moble View */
+/* screen sizes < 800px */
+@media only screen and (max-width: 850px) {
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    flex-direction: column;
+    background-color: hsl(0 0% 100% / 0.1);
+    backdrop-filter: blur(1.5rem);
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-item {
+    margin: 5rem 0;
+  }
+
+  .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(1) {
+    -webkit-transform: translateY(8px) rotate(45deg);
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    -webkit-transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-8px) rotate(-45deg);
+  }
+  /* styling the register link */
+  .register {
+    background-color: transparent;
+    padding: 0;
+  }
+  /* styling the Log in link */
+  .login {
+    border: none;
+    padding: 0;
+  }
+  /* 2 column in main section */
+  .main-section {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .right-col {
+    margin-top: 2rem;
+    margin-right: 8rem;
+  }
+  /* user section 4col to 2col */
+  .users {
+    gap: clamp(0.5em, 2vw, 1em);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "student teacher"
+      "admin stat";
+  }
+  /* Services Heading Center */
+  .heading {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  /* Services Section 3 Cards */
+  .cards {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-child {
+    margin-bottom: 2rem;
+  }
+}
