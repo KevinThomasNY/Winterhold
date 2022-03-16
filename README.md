@@ -6,4 +6,4 @@ Current UI Design: [Click Here](https://www.figma.com/proto/QToaNxw7eodtgR9wC6rJ
 Design Document: [Click Here](https://docs.google.com/document/d/1PzMCWYurT-ofa-H5PQOdY5lU1QvbF7sMplLEjL8KVKQ/edit)
 
 Current Website link: [Click Here](https://winterhold-university.netlify.app/)
-<img src="src/resources/images/gitReadMe.png">
+
