@@ -6,7 +6,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 } else { 
   header('location:login.php');
 }
-$query_minors = 'SELECT minor_name FROM minors';
+$query_minors = 'SELECT minor_name FROM minor';
 $minors_statement = $db->prepare($query_minors);
 $minors_statement->execute();
 $minors = $minors_statement->fetchAll();

@@ -11,9 +11,9 @@ if(isset($_POST['submitBtnLogin'])) {
     try {
       #$query = "select * from login where `email`=:username and `password`=:password";
       $query = "select *
-      from users
+      from user
       INNER JOIN login
-      ON users.user_id = login.user_id
+      ON user.user_id = login.user_id
       where login.email =:username AND login.password =:password ";
 
       $stmt = $db->prepare($query);

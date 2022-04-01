@@ -6,7 +6,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 } else { 
   header('location:login.php');
 }
-$query_majors = 'SELECT major_name FROM majors';
+$query_majors = 'SELECT major_name FROM major';
 $majors_statement = $db->prepare($query_majors);
 $majors_statement->execute();
 $majors = $majors_statement->fetchAll();

@@ -6,7 +6,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 } else { 
   header('location:login.php');
 }
-$query_departments = 'SELECT  * FROM departments';
+$query_departments = 'SELECT  * FROM department';
 $departments_statement = $db->prepare($query_departments);
 $departments_statement->execute();
 $departments = $departments_statement->fetchAll();
@@ -170,7 +170,7 @@ $departments_statement->closeCursor();
                                     
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['room_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['email']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['phone']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['phone_number']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['chair_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $department['secretary']; ?> </td>
 
