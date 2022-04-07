@@ -8,15 +8,12 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 include("../db.php");
 
 
-$query_courses = 'select course.course_id, course.course_name, department.department_name
-from course
-inner join department on course.department_id = department.department_id
-order by department.department_name;';
+$query_courses = 'select * from major
+inner join department on major.department_id = department.department_id;';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +22,7 @@ $courses_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Homepage</title>
+    <title>Faculty Homepage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/home.css" />
 </head>
@@ -204,7 +201,7 @@ $courses_statement->closeCursor();
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate"> Admin Homepage </span>
+                        <span class="ml-2 text-sm tracking-wide truncate"> Faculty Homepage </span>
                     </a>
                 </li>
                 <li>
@@ -277,45 +274,7 @@ $courses_statement->closeCursor();
                         <span class="ml-2 text-sm tracking-wide truncate">Academic Calendar</span>
                     </a>
                 </li>
-                <li>
-                    <a href="view_students.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
-                        <span class="inline-flex justify-center items-center ml-4">
-                            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                        </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Students</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="view_faculty.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
-                        <span class="inline-flex justify-center items-center ml-4">
-                            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                        </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Faculty</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="view_hold.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
-                        <span class="inline-flex justify-center items-center ml-4">
-                            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                        </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Holds</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="../logout.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
@@ -328,7 +287,7 @@ $courses_statement->closeCursor();
         </div>
     </div>
     <!-- ./Sidebar -->
-    <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
+ <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
             <nav class="navbar">
                 <a href="../../home.html" class="nav-logo">Winterhold University</a>
@@ -344,65 +303,9 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-                <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-            <!-- add a select box containing options -->
-            <!-- for SELECT query -->
-            <h2 class="text-white">Select Department:</h2>
-            <div class="relative inline-block w-100 text-gray-700">
-                <select id="select" name="department_name" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" >
-                    <option value="'All Departments'" >All Departments</option>
-                    <option value="'Accounting, Taxation & Business Law'">Accounting, Taxation & Business Law</option>
-                    <option value="'American Studies/Media & Communications'">American Studies/Media & Communications</option>
-                    <option value="'Biological Sciences'">Biological Sciences</option>
-                    <option value="'English'" >English</option>
-                    <option value="'Exceptional Education & Learning'" >Exceptional Education & Learning</option>
-                    <option value="'History & Philosophy'" >History & Philosophy</option>
-                    <option value="'Mathematics, Computer & Information Science'" >Mathematics, Computer & Information Science</option>
-                    <option value="'Modern Languages'" >Modern Languages</option>
-                    <option value="'Politics, Economics & Law'">Politics, Economics & Law</option>
-                    <option value="'Psychology'">Psychology</option>
-                    <option value="'Public Health'" >Public Health</option>
-                    <option value="'Visual Arts'" >Visual Arts</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                </div>
-            </div>
-            <input class="block mt-5" type="submit" value="Submit"></p>
-        </form>
-        <script type="text/javascript">
-            document.getElementById('select').value = "<?php echo $_POST['department_name'];?>";
-        </script>
-        <?php 
-            if(isset($_POST['department_name'])){
-                $dep_name = $_POST['department_name'];
-                if($dep_name == "'All Departments'"){
-                    $query_courses = 'select course.course_id, course.course_name, department.department_name
-                    from course
-                    inner join department on course.department_id = department.department_id
-                    order by department.department_name;';
+        
 
-                    $courses_statement = $db->prepare($query_courses);
-                    $courses_statement->execute();
-                    $courses = $courses_statement->fetchAll();
-                    $courses_statement->closeCursor();
-                }
-                else{
-                    $query_courses = 'select course.course_id, course.course_name, department.department_name
-                    from course
-                    inner join department on course.department_id = department.department_id
-                    where department.department_name = '." $dep_name ". ';';
-                    $courses_statement = $db->prepare($query_courses);
-                    $courses_statement->execute();
-                    $courses = $courses_statement->fetchAll();
-                    $courses_statement->closeCursor();
-                }
-            }
-        ?>
-
-        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Course Catolog</span>
+        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Majors</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -410,15 +313,17 @@ $courses_statement->closeCursor();
                         <table class="min-w-full">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department </th>
+
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Major Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department Name </th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_id']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
+
+
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['major_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['department_name']; ?> </td>
+
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>
@@ -435,7 +340,6 @@ $courses_statement->closeCursor();
             </ul>
         </footer>
     </div>
-    <script src="../../JavaScript/hamburger_menu.js"></script>
 </body>
 
 </html>

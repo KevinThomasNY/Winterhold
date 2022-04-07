@@ -521,7 +521,9 @@ $courses_statement->closeCursor();
                         $str = $course['semester_name'];
                         echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
                         ?> </td>
-                        <td><?php echo $course['available_seats']; ?> </td>
+                        <td><?php
+                        $rand = rand(0,29);
+                        echo ($course['available_seats'] - $rand); ?> </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
         </div>
