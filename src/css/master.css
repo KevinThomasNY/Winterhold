@@ -26,7 +26,6 @@ of changing each individual item
   --transition: all 0.3s ease-in-out;
   --border-radius: 8px;
 }
-
 /* Global Styles */
 * {
   margin: 0;
@@ -38,11 +37,13 @@ body {
   max-width: 100%;
   overflow-x: hidden;
 }
-
+/* e1e9f0 */
 body {
   background-color: var(--clr-background);
-  font-family: "Poppins", sans-serif;
-  color: var(--clr-white);
+}
+
+th {
+  background-color: #f9fafb;
 }
 
 .container {

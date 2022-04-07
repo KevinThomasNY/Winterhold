@@ -30,13 +30,13 @@ if(isset($_POST['submitBtnLogin'])) {
         $_SESSION['sess_user_type'] = $row['user_type'];
 
         if($row['user_type'] == "Student"){
-            header("location: student.php");
+            header("location: ./Student/student.php");
         }
         if($row['user_type'] == "Faculty"){
-            header("location: faculty.php");
+            header("location: ./Faculty/faculty.php");
         }
         if($row['user_type'] == "Admin"){
-            header("location: admin.php");
+            header("location: ./Admin/admin.php");
         } 
         if($row['user_type'] == "Researcher"){
             header("location: researcher.php");
