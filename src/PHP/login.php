@@ -23,7 +23,8 @@ if(isset($_POST['submitBtnLogin'])) {
       $count = $stmt->rowCount();
       $row   = $stmt->fetch(PDO::FETCH_ASSOC);
       #if user_id == password 
-      if($count == 1 && !empty($row)) {
+      if($count == 1 && !empty($row)) { 
+
         $_SESSION['sess_user_id']   = $row['user_id'];
         $_SESSION['sess_first_name'] = $row['first_name'];
         $_SESSION['sess_last_name'] = $row['last_name'];

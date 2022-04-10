@@ -2,6 +2,9 @@
 session_start();
 if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
   #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
+  ?>
+
+  <?php
 } else { 
   header('location:login.php');
 }
@@ -18,7 +21,10 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
     <link rel="stylesheet" href="../../css/home.css" />
 </head>
 
+
 <body>
+
+
         <style>
         /* Compiled dark classes from Tailwind */
         .dark .dark\:divide-gray-700> :not([hidden])~ :not([hidden]) {

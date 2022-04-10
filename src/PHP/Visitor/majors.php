@@ -10,6 +10,15 @@ $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
 
+ $majorErr =  "";
+ $ba = "'%B.A.'";
+ $bs = "'%B.S.'";
+ $ms = "'%M.S.'";
+ $phd = "'%Ph.D.'";
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,11 +29,43 @@ $courses_statement->closeCursor();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Majors</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../../css/home.css">
 </head>
 
-<body>
-    <style>
+<body> <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST") { 
+    if(empty($_POST['majorType'])){
+        $majorErr = "Major Type Required"; ?> <script type="text/javascript">
+        let timerInterval
+        Swal.fire({
+            title: 'Please Select a Major Type',
+            html: 'I will close in <b></b> milliseconds.',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        })
+    </script> <?php }
+}
+    ?> <style>
+        .error {
+            color: #F8646C;
+        }
+
         /* Compiled dark classes from Tailwind */
         .dark .dark\:divide-gray-700> :not([hidden])~ :not([hidden]) {
             border-color: rgba(55, 65, 81);
@@ -290,27 +331,128 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        
+        <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <!-- add a select box containing options -->
+            <!-- for SELECT query -->
+            <h2 class="text-white">Select Department:</h2>
+            <div class="relative inline-block w-100 text-gray-700">
+                <select id="select" name="department_name" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                    <option value="'All Departments'">All Departments</option>
+                    <option value="'Accounting, Taxation & Business Law'">Accounting, Taxation & Business Law</option>
+                    <option value="'American Studies/Media & Communications'">American Studies/Media & Communications</option>
+                    <option value="'Biological Sciences'">Biological Sciences</option>
+                    <option value="'English'">English</option>
+                    <option value="'Exceptional Education & Learning'">Exceptional Education & Learning</option>
+                    <option value="'History & Philosophy'">History & Philosophy</option>
+                    <option value="'Mathematics, Computer & Information Science'">Mathematics, Computer & Information Science</option>
+                    <option value="'Modern Languages'">Modern Languages</option>
+                    <option value="'Politics, Economics & Law'">Politics, Economics & Law</option>
+                    <option value="'Psychology'">Psychology</option>
+                    <option value="'Public Health'">Public Health</option>
+                    <option value="'Visual Arts'">Visual Arts</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-white-700">Major Type:</span>
+                <div class="mt-2">
+                    <label class="inline-flex items-center">
+                        <input type="radio" class="form-radio" name="majorType" value="undergraduate" <?php if (isset($_POST['majorType']) && $_POST['majorType'] == 'undergraduate') echo "checked";?>>
+                        <span class="ml-2">Undergraduate</span>
+                    </label>
+                    <label class="inline-flex items-center ml-6">
+                        <input type="radio" class="form-radio" name="majorType" value="graduate" <?php if (isset($_POST['majorType']) && $_POST['majorType'] == 'graduate') echo "checked";?>>
+                        <span class="ml-2">Graduate</span>
+                    </label>
+                    <label class="inline-flex items-center ml-6">
+                        <input type="radio" name="majorType" <?php if (isset($_POST['majorType']) && $_POST['majorType'] == 'both') echo "checked";?> value="both"><span class="ml-2">Both</span>
+                        <span class="error">* <?php echo $majorErr;?></span>
+                    </label>
+                </div>
+            </div>
+            <input class="block mt-5" type="submit" value="Submit"></p>
+        </form>
+        <script type="text/javascript">
+            document.getElementById('select').value = "<?php echo $_POST['department_name'];?>";
+        </script> <?php 
+            if( $majorErr != "Major Type Required"){
+                if(isset($_POST['department_name']) && $_POST['majorType']){
+                    $dep_name = $_POST['department_name'];
+                    $major_type = $_POST['majorType'];
 
-        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Majors</span>
+                    if($dep_name == "'All Departments'" && $major_type == "both"){
+                        $query_courses = 'select * from major
+                        inner join department on major.department_id = department.department_id;';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else if ($dep_name == "'All Departments'" && $major_type == "undergraduate"){
+                        $query_courses = 'select * from major
+inner join department on major.department_id = department.department_id
+where major.major_name LIKE '.$ba.' or major.major_name LIKE '.$bs.';';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else if ($dep_name == "'All Departments'" && $major_type == "graduate"){
+                        $query_courses = 'select * from major
+inner join department on major.department_id = department.department_id
+where major.major_name LIKE '.$ms.' or major.major_name LIKE '.$phd.';';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else if ($dep_name != "'All Departments'" && $major_type == "graduate"){
+                        $query_courses = 'select major.major_name, department_name from major
+inner join department on major.department_id = department.department_id
+where (major.major_name like '.$ms.' or major.major_name like '.$phd.') and department.department_name = '.$dep_name.';';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else if ($dep_name != "'All Departments'" && $major_type == "undergraduate"){
+                        $query_courses = 'select major.major_name, department_name from major
+inner join department on major.department_id = department.department_id
+where (major.major_name like '.$ba.' or major.major_name like '.$bs.') and department.department_name = '.$dep_name.';';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else if ($dep_name != "'All Departments'" && $major_type == "both"){
+                        $query_courses = 'select * from major
+inner join department on major.department_id = department.department_id
+where department.department_name = '." $dep_name ".';';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                }
+         } ?> <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Majors</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow-md sm:rounded-lg">
-                        <table class="min-w-full">
+                        <table id="myTable" class="min-w-full">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Major Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department Name </th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-
-
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['major_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['department_name']; ?> </td>
-
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>
@@ -318,8 +460,20 @@ $courses_statement->closeCursor();
             </div>
         </div>
         </table>
+        <script type="text/javascript">
+            let x = document.getElementById("myTable").rows.length;
+            if (x == 1) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: "<?php echo 'There is no '.$_POST['majorType'].' degree from the '.$_POST['department_name'].' department.'; ?>",
+                    icon: 'info',
+                    confirmButtonText: 'Ok',
+                    showCloseButton: true
+                })
+            }
+        </script>
         <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
-            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li>
                     <a href="#" class="mr-4 hover:underline md:mr-6 ">Back To Top</a>
