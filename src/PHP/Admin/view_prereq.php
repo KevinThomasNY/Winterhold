@@ -1,21 +1,19 @@
 <?php 
 session_start();
-if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
-  #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
-} else { 
-  header('location:login.php');
-}
 include("../db.php");
 
+$var_value = $_GET['varname'];
 
-$query_courses = 'SELECT  * FROM department
-inner join room on department.room_id = room.room_id
-inner join building on room.building_id = building.building_id
-order by department.department_name';
+$query_courses = 'select * from prerequite
+inner join course on course.course_id = prerequite.prereq_id
+inner join department on department.department_id = course.department_id
+where prerequite.course_id ="'.$var_value.'";';
+
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,13 +22,14 @@ $courses_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Homepage</title>
+    <title>Course Catolog</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../../css/home.css" />
+    <link rel="stylesheet" href="../../css/home.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-        <style>
+    <style>
         /* Compiled dark classes from Tailwind */
         .dark .dark\:divide-gray-700> :not([hidden])~ :not([hidden]) {
             border-color: rgba(55, 65, 81);
@@ -188,9 +187,9 @@ $courses_statement->closeCursor();
         }
     </style>
     <!-- Sidebar -->
-    <?php include("./menu.php"); ?>
+        <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
-<div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
+    <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
             <nav class="navbar">
                 <a href="../../home.html" class="nav-logo">Winterhold University</a>
@@ -206,37 +205,32 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        
-
-        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Departments</span>
+<span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"> <?php 
+            echo 'Prerequisites for '.$var_value.':';
+            ?> </span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow-md sm:rounded-lg">
-                        <table class="min-w-full">
+                        <table id="myTable" class="min-w-full">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course id </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Credits </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Minimum Grade </th>
 
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department Name </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Building </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Room # </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Email </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Phone #</th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Chair</th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Secretary </th>
                                 </tr>
                             </thead>
+                            <?php $pre ?>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-
-
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php $pre = $course['prereq_id']; echo $course['prereq_id']; ?> </td>
+                                    
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_credits']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['department_name']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['building_name']; ?> </td>
-                                                     
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['room_number']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['email']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['phone_number']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['chair_name']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['secretary']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['minimum_grade']; ?> </td>
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>
@@ -244,16 +238,32 @@ $courses_statement->closeCursor();
             </div>
         </div>
         </table>
-        <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
-            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
+
+
+        <script type="text/javascript">
+            let x = document.getElementById("myTable").rows.length;
+            if (x == 1) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: "<?php echo 'There are no prerequisites for '.$var_value.'' ?> ",
+                    icon: 'info',
+                   type: "warning",
+                   confirmButtonText: 'Take me back to course catolog!',
+                }).then(function() {
+    window.location = "home_course_catolog.php";
+});
+            }
+        </script>
+        <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6 ">Back To Top</a>
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="home_course_catolog.php">Go Back To Course Catalog</a></button>
                 </li>
             </ul>
         </footer>
     </div>
-    <script src="../JavaScript/hamburger_menu.js"></script>
+    <script src="../../JavaScript/hamburger_menu.js"></script>
 </body>
 
 </html>
