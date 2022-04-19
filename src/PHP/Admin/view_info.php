@@ -1,21 +1,50 @@
-<?php 
+<!-- View the student Information details and edit info by clicking the edit button, the edit button takes you to edit_info.php --> <?php
 session_start();
-if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
-  #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
-} else { 
-  header('location:login.php');
+if (isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "")
+{
+    #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
+    
 }
-include("../db.php");
+else
+{
+    header('location:login.php');
+}
+include ("../db.php");
 
-$var_value = $_GET['varname'];
-$first = $_GET['f_name'];
+$first = $_POST['first_name'];
+$student_id = $_POST['student_id'];
+$student_type = $_POST['student_type'];
 
-$query_courses = 'select * from user
-inner join student on student.student_id = user.user_id
-inner join student_major on student.student_id = student_major.student_id
-inner join major on major.major_id = student_major.major_id
-where student.student_id = '.$var_value.';';
-
+$query_courses;
+// Below is the query if the student is a undergraduate_student
+if ($student_type == 'Undergraduate')
+{
+    $query_courses = 'select user.user_id, user.first_name, user.last_name, user.date_of_birth, user.city,
+    user.address, user.state, user.zip, login.email, login.password, student.student_type, major.major_name,
+    undergraduate_student.student_year, undergraduate_student.student_type as status
+    from user
+    inner join login on login.user_id = user.user_id
+    inner join student on student.student_id = user.user_id
+    inner join student_major on student.student_id = student_major.student_id
+    inner join major on major.major_id = student_major.major_id
+    inner join undergraduate_student on user.user_id = undergraduate_student.student_id
+    where student.student_id = ' . $student_id . ';';
+}
+// Below is the query if the student id a graduate student
+// I am using sql alias name becuse student_type is used in two different tables
+else
+{
+    $query_courses = 'select  user.user_id, user.first_name, user.last_name, user.date_of_birth, user.city,
+    user.address, user.state, user.zip, login.email, login.password, student.student_type, major.major_name,
+    graduate_student.student_type as status
+    from user
+    inner join login on login.user_id = user.user_id
+    inner join student on student.student_id = user.user_id
+    inner join student_major on student.student_id = student_major.student_id
+    inner join major on major.major_id = student_major.major_id
+    inner join graduate_student on user.user_id = graduate_student.student_id
+    where student.student_id = ' . $student_id . ';';
+}
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
@@ -31,153 +60,12 @@ $courses_statement->closeCursor();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Info</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../../css/home.css">
+    <link rel="stylesheet" href="../../css/form.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
     <style>
-        /* Compiled dark classes from Tailwind */
-        .dark .dark\:divide-gray-700> :not([hidden])~ :not([hidden]) {
-            border-color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:bg-gray-50 {
-            background-color: rgba(249, 250, 251);
-        }
-
-        .dark .dark\:bg-gray-100 {
-            background-color: rgba(243, 244, 246);
-        }
-
-        .dark .dark\:bg-gray-600 {
-            background-color: rgba(75, 85, 99);
-        }
-
-        .dark .dark\:bg-gray-700 {
-            background-color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:bg-gray-800 {
-            background-color: rgba(31, 41, 55);
-        }
-
-        .dark .dark\:bg-gray-900 {
-            background-color: rgba(17, 24, 39);
-        }
-
-        .dark .dark\:bg-red-700 {
-            background-color: rgba(185, 28, 28);
-        }
-
-        .dark .dark\:bg-green-700 {
-            background-color: rgba(4, 120, 87);
-        }
-
-        .dark .dark\:hover\:bg-gray-200:hover {
-            background-color: rgba(229, 231, 235);
-        }
-
-        .dark .dark\:hover\:bg-gray-600:hover {
-            background-color: rgba(75, 85, 99);
-        }
-
-        .dark .dark\:hover\:bg-gray-700:hover {
-            background-color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:hover\:bg-gray-900:hover {
-            background-color: rgba(17, 24, 39);
-        }
-
-        .dark .dark\:border-gray-100 {
-            border-color: rgba(243, 244, 246);
-        }
-
-        .dark .dark\:border-gray-400 {
-            border-color: rgba(156, 163, 175);
-        }
-
-        .dark .dark\:border-gray-500 {
-            border-color: rgba(107, 114, 128);
-        }
-
-        .dark .dark\:border-gray-600 {
-            border-color: rgba(75, 85, 99);
-        }
-
-        .dark .dark\:border-gray-700 {
-            border-color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:border-gray-900 {
-            border-color: rgba(17, 24, 39);
-        }
-
-        .dark .dark\:hover\:border-gray-800:hover {
-            border-color: rgba(31, 41, 55);
-        }
-
-        .dark .dark\:text-white {
-            color: rgba(255, 255, 255);
-        }
-
-        .dark .dark\:text-gray-50 {
-            color: rgba(249, 250, 251);
-        }
-
-        .dark .dark\:text-gray-100 {
-            color: rgba(243, 244, 246);
-        }
-
-        .dark .dark\:text-gray-200 {
-            color: rgba(229, 231, 235);
-        }
-
-        .dark .dark\:text-gray-400 {
-            color: rgba(156, 163, 175);
-        }
-
-        .dark .dark\:text-gray-500 {
-            color: rgba(107, 114, 128);
-        }
-
-        .dark .dark\:text-gray-700 {
-            color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:text-gray-800 {
-            color: rgba(31, 41, 55);
-        }
-
-        .dark .dark\:text-red-100 {
-            color: rgba(254, 226, 226);
-        }
-
-        .dark .dark\:text-green-100 {
-            color: rgba(209, 250, 229);
-        }
-
-        .dark .dark\:text-blue-400 {
-            color: rgba(96, 165, 250);
-        }
-
-        .dark .group:hover .dark\:group-hover\:text-gray-500 {
-            color: rgba(107, 114, 128);
-        }
-
-        .dark .group:focus .dark\:group-focus\:text-gray-700 {
-            color: rgba(55, 65, 81);
-        }
-
-        .dark .dark\:hover\:text-gray-100:hover {
-            color: rgba(243, 244, 246);
-        }
-
-        .dark .dark\:hover\:text-blue-500:hover {
-            color: rgba(59, 130, 246);
-        }
-
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -193,8 +81,7 @@ $courses_statement->closeCursor();
             }
         }
     </style>
-    <!-- Sidebar -->
-    <?php include("./menu.php"); ?>
+    <!-- Sidebar --> <?php include ("./menu.php"); ?>
     <!-- ./Sidebar -->
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
@@ -212,7 +99,7 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-<span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php echo $first."'s Info"; ?></span>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php echo $first . "'s Info"; ?></span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -222,37 +109,66 @@ $courses_statement->closeCursor();
                                 <tr>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Student id </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Email </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Password </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Student Type </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Status </th>
+                                    <?php
+                                    if($student_type == 'Undergraduate')
+                                    {
+                                        echo '<th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Year </th>';
+                                    }
+                                    ?>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Major </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> DOB </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Address </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> City </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> State </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Zip </th>
-
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Edit Info</th>
                                 </tr>
-                            </thead>
-                            <?php $pre ?>
-                            <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['student_id']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['first_name']." ".$course['last_name']; ?>  </td>
+                            </thead> <?php $pre ?> <tbody> <?php foreach ($courses as $course): ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['user_id']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['first_name'] . " " . $course['last_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['email']; ?></td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['password']; ?></td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['student_type']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['status']; ?> </td>
+                                    <?php
+                                    if($student_type == 'Undergraduate')
+                                    {
+                                    echo '<td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">' .$course['student_year']. '</td>';
+                                    }
+                                    ?>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['major_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['date_of_birth']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['address']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['city']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['state']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['zip']; ?> </td>
-                                </tr><?php endforeach; ?> </tbody>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <form action="edit_info.php" method="post">
+                                            <input type="hidden" name="email" value="<?php echo $course['email'] ?>" />
+                                            <input type="hidden" name="student_id" value="<?php echo $student_id ?>" />
+                                            <input type="hidden" name="password" value="<?php echo $course['password'] ?>" />
+                                            <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
+                                            <input type="hidden" name="last_name" value="<?php echo $course['last_name'] ?>" />
+                                            <input type="hidden" name="date_of_birth" value="<?php echo $course['date_of_birth'] ?>" />
+                                            <input type="hidden" name="address" value="<?php echo $course['address'] ?>" />
+                                            <input type="hidden" name="city" value="<?php echo $course['city'] ?>" />
+                                            <input type="hidden" name="state" value="<?php echo $course['state'] ?>" />
+                                            <input type="hidden" name="zip" value="<?php echo $course['zip'] ?>" />
+                                            <input type="submit" name="whatever" value="Edit" id="hyperlink-style-button" />
+                                        </form>
+                                    </td>
+                                </tr><?php
+endforeach; ?> </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
         </table>
-
-
-
         <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
@@ -262,7 +178,7 @@ $courses_statement->closeCursor();
             </ul>
         </footer>
     </div>
-    <script src="../JavaScript/hamburger_menu.js"></script>
+    <script src="../../JavaScript/hamburger_menu.js"></script>
 </body>
 
 </html>

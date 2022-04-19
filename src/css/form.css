@@ -43,6 +43,7 @@ Post is better than get becuase the data is not shown in the Url this is importa
   cursor: pointer;
   cursor: hand;
 }
+
 /* Global Styles */
 * {
   margin: 0;
@@ -54,13 +55,11 @@ body {
   max-width: 100%;
   overflow-x: hidden;
 }
-/* e1e9f0 */
+
 body {
   background-color: var(--clr-background);
-}
-
-th {
-  background-color: #f9fafb;
+  font-family: "Poppins", sans-serif;
+  color: var(--clr-white);
 }
 
 .container {
@@ -68,72 +67,6 @@ th {
   margin: 0 auto;
   padding: 1em;
 }
-
-/* 
-Three.js
-Loading the 3D Model
-*/
-.webgl {
-  width: 100%;
-  outline: none;
-}
-#model {
-  width: 100%;
-}
-
-/* 
-login.html styling
-*/
-/* .login {
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10rem;
-}
-.login h1 {
-  font-size: clamp(2rem, 2.5vw, 2.25rem);
-  margin-bottom: 1rem;
-}
-input[type="password"] {
-  width: 350px;
-  padding: 15px 15px;
-  box-sizing: border-box;
-  background-color: var(--clr-card-design);
-  color: var(--clr-white);
-  border-radius: 8px;
-  border: 1px solid #72778f;
-  -webkit-text-security: disc;
-  font-size: 20px;
-}
-input[type="email"] {
-  width: 350px;
-  padding: 15px 15px;
-  box-sizing: border-box;
-  background-color: var(--clr-card-design);
-  color: var(--clr-white);
-  border-radius: 8px;
-  border: 1px solid #72778f;
-  font-size: 20px;
-}
-input[type="submit"] {
-  background-color: var(--clr-red-accent);
-  padding: 0.5em 1.5em;
-  border: var(--clr-red-accent);
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
-  font-weight: 400;
-  color: var(--clr-white);
-  cursor: pointer;
-  border-radius: 8px;
-  width: 150px;
-}
-
-label {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-}
-.login a {
-  color: #b1b3bd;
-  text-decoration: underline;
-} */
 
 /* 
 Header and Navigation bar
