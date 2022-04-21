@@ -28,6 +28,28 @@ of changing each individual item
 }
 /* Style the hidden form below, this is used for the post method
 Post is better than get becuase the data is not shown in the Url this is important for forms with passwords*/
+/* input[type="submit"] {
+  background-color: var(--clr-red-accent);
+  padding: 0.5em 1.5em;
+  border: var(--clr-red-accent);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
+  color: var(--clr-white);
+  cursor: pointer;
+  border-radius: 8px;
+  width: 150px;
+} */
+#lol {
+  background-color: var(--clr-red-accent);
+  padding: 0.5em 1.5em;
+  border: var(--clr-red-accent);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
+  color: var(--clr-white);
+  cursor: pointer;
+  border-radius: 8px;
+  width: 150px;
+}
 #hyperlink-style-button {
   background: none;
   border: 0;
@@ -39,6 +61,34 @@ Post is better than get becuase the data is not shown in the Url this is importa
   background: none;
   border: 0;
   color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  cursor: hand;
+}
+#transcript-btn {
+  background: none;
+  border: 0;
+  color: red;
+  text-decoration: none;
+}
+#transcript-btn:hover {
+  background: none;
+  border: 0;
+  color: red;
+  text-decoration: underline;
+  cursor: pointer;
+  cursor: hand;
+}
+#degree-btn {
+  background: none;
+  border: 0;
+  color: green;
+  text-decoration: none;
+}
+#degree-btn:hover {
+  background: none;
+  border: 0;
+  color: greem;
   text-decoration: underline;
   cursor: pointer;
   cursor: hand;
@@ -104,7 +154,7 @@ input[type="password"] {
   border: 1px solid #72778f;
   -webkit-text-security: disc;
   font-size: 20px;
-}
+} 
 input[type="email"] {
   width: 350px;
   padding: 15px 15px;
@@ -114,19 +164,9 @@ input[type="email"] {
   border-radius: 8px;
   border: 1px solid #72778f;
   font-size: 20px;
-}
-input[type="submit"] {
-  background-color: var(--clr-red-accent);
-  padding: 0.5em 1.5em;
-  border: var(--clr-red-accent);
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
-  font-weight: 400;
-  color: var(--clr-white);
-  cursor: pointer;
-  border-radius: 8px;
-  width: 150px;
-}
+}*/
 
+/*
 label {
   font-size: clamp(1rem, 2.5vw, 1.5rem);
 }

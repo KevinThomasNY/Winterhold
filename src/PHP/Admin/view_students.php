@@ -27,7 +27,7 @@ $courses_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Homepage</title>
+    <title>View Students</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/master.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
@@ -128,16 +128,30 @@ $courses_statement->closeCursor();
                         <td><?php echo $course['student_type']; ?> </td>
                         <td><?php echo $course['major_name']; ?> </td>
                         <!-- Passing the data below using a hidden form, therefore, the values are not shown in the URL -->
-                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
                             <form action="view_info.php" method="post">
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
                                 <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
                                 <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
-                                <input type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
+                                <input  type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
                             </form>
                         </td>
-                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-red-600 dark:text-red-500 hover:underline" href="view_transcript.php?varname=<?php  echo $course['student_id']?>&first_name=<?php echo $course['first_name']; ?>">View Transcript</a> </td>
-                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-green-600 dark:text-green-500 hover:underline" href="view_degree_audit.php?varname=<?php  echo $course['student_id']?>&first_name=<?php echo $course['first_name']; ?>">View Degree Audit</a> </td>
+                        <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+                            <form action="view_transcript.php" method="post">
+                                <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
+                                <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
+                                <input  type="submit" name="whatever" value="View Transcript" id="transcript-btn" />
+                            </form>
+                        </td>
+                        <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+                            <form action="view_degree_audit.php" method="post">
+                                <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
+                                <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
+                                <input  type="submit" name="whatever" value="View Degree Audit" id="degree-btn" />
+                            </form>
+                        </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
         </div>
