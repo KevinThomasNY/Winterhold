@@ -9,11 +9,11 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 include("../db.php");
 
 
-$query_courses = 'select * from user
+$query_courses = 'select student.student_id, user.first_name, user.last_name, student.student_type, major.major_name from user
 inner join student on student.student_id = user.user_id
 inner join student_major on student.student_id = student_major.student_id
 inner join major on major.major_id = student_major.major_id
-where user_type = "Student";';
+where user.user_type = "Student" and student.student_type = "Graduate";';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
@@ -37,6 +37,9 @@ $courses_statement->closeCursor();
 
 <body>
     <style>
+        label {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
         .dataTables_wrapper .dataTables_filter input {
             border: 1px solid #72778f !important;
             background-color: #72778f !important;
@@ -107,7 +110,66 @@ $courses_statement->closeCursor();
             </nav>
         </header>
 
-        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Students</span>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800">All Students</span>
+        <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <div class="mt-4">
+                <p class="text-white">Select Student Type:</p>
+                <div class="mt-2">
+                    <label class="inline-flex items-center">
+                        <input   type="radio" class="form-radio" name="student_type" value="'Undergraduate'" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == "'Undergraduate'") echo "checked";?>>
+                        <span class="ml-2">Undergraduate</span>
+                    </label>
+                    <?php $donkey = "checked"; ?>
+                    <label class="inline-flex items-center ml-6">
+                        <input type="radio" class="form-radio" name="student_type" value="'Graduate'" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == "'Graduate'") echo "checked"; ?>>
+                        <span class="ml-2">Graduate</span>
+                    </label>
+                    <label class="inline-flex items-center ml-6">
+                        <input type="radio" name="student_type" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == 'both') echo "checked";?> value="both"><span class="ml-2">Both</span>
+                    </label>
+                </div>
+            </div>
+            <input class="block rounded-lg mt-5 text-2xl text-white bg-[#f8646c] px-9 py-2.5" type="submit" value="Submit"></p>
+        </form>
+
+        <?php
+            if(isset($_POST['student_type'])){
+                $student_type = $_POST['student_type'];
+                if($student_type == "both"){
+                    $query_courses = 'select student.student_id, user.first_name, user.last_name, student.student_type, major.major_name from user
+                    inner join student on student.student_id = user.user_id
+                    inner join student_major on student.student_id = student_major.student_id
+                    inner join major on major.major_id = student_major.major_id
+                    where user.user_type = "Student";';
+                    $courses_statement = $db->prepare($query_courses);
+                    $courses_statement->execute();
+                    $courses = $courses_statement->fetchAll();
+                    $courses_statement->closeCursor();
+                }
+                else if($student_type == "'Graduate'"){
+                    $query_courses = 'select student.student_id, user.first_name, user.last_name, student.student_type, major.major_name from user
+                    inner join student on student.student_id = user.user_id
+                    inner join student_major on student.student_id = student_major.student_id
+                    inner join major on major.major_id = student_major.major_id
+                    where user.user_type = "Student" and student.student_type = '.$student_type.';';
+                    $courses_statement = $db->prepare($query_courses);
+                    $courses_statement->execute();
+                    $courses = $courses_statement->fetchAll();
+                    $courses_statement->closeCursor();
+                }
+                else if($student_type == "'Undergraduate'"){
+                    $query_courses = 'select student.student_id, user.first_name, user.last_name, student.student_type, major.major_name from user
+                    inner join student on student.student_id = user.user_id
+                    inner join student_major on student.student_id = student_major.student_id
+                    inner join major on major.major_id = student_major.major_id
+                    where user.user_type = "Student" and student.student_type = '.$student_type.';';
+                    $courses_statement = $db->prepare($query_courses);
+                    $courses_statement->execute();
+                    $courses = $courses_statement->fetchAll();
+                    $courses_statement->closeCursor();
+                }
+            }
+        ?>
 
         <div class="mx-8 my-4 flex flex-col">
             <table id="example">
@@ -155,7 +217,6 @@ $courses_statement->closeCursor();
                     </tr><?php endforeach; ?> </tbody>
             </table>
         </div>
-        </table>
         <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">

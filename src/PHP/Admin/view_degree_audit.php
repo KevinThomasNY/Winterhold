@@ -24,7 +24,7 @@ $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
 
 //The below query is used to in the student information section
-$result = $db->query('select user.last_name, major.major_name, major.major_id, department.department_name from user
+$result = $db->query('select user.last_name, major.major_name, major.major_id, department.department_name, major.number_of_credits from user
 inner join student on student.student_id = user.user_id
 inner join student_major on  student_major.student_id = student.student_id
 inner join major on major.major_id = student_major.major_id
@@ -35,6 +35,7 @@ while ($rows = $result->fetch()){
 $last_name = $rows['last_name'];
 $major_name = $rows['major_name'];
 $major_id = $rows['major_id'];
+$number_of_credits = $rows['number_of_credits'];
 $department_name = $rows['department_name'];
 }
 //Below get only the letter grade to calculate gpa
@@ -45,6 +46,26 @@ where student_history.semester_id != "SEMS2022" and student_id = '.$student_id.'
 
 while ($rows2 = $result2->fetch()){
 $gradesArray[] = $rows2['grade'];
+}
+
+//sum of required courses credits
+$result3 = $db->query('select SUM(course_credits) from major_requirements
+inner join course on major_requirements.course_id = course.course_id
+where major_id ='. $major_id.';');
+
+while ($rows3 = $result3->fetch()){
+$requiredCourseSum = $rows3['SUM(course_credits)'];
+}
+//sum of credits completed
+$result4 = $db->query('select SUM(course_credits) from student_history
+inner join student_major on student_history.student_id = student_major.student_id
+inner join major on major.major_id = student_major.major_id
+inner join semester on semester.semester_id = student_history.semester_id
+inner join course on course.course_id = student_history.course_id
+where student_history.semester_id != "SEMS2022" and student_history.student_id = '.$student_id.';');
+
+while ($rows4 = $result4->fetch()){
+$currentCourseSum = $rows4['SUM(course_credits)'];
 }
 //Below is the current courses_statement
 $query_courses2 = 'select * from student_history
@@ -68,6 +89,25 @@ $courses_statement3->execute();
 $courses3 = $courses_statement3->fetchAll();
 $courses_statement3->closeCursor();
 
+//get all courses student taken
+$completedCoursesArray = array();
+$result5 = $db->query('select course_id from student_history
+inner join semester on semester.semester_id = student_history.semester_id
+where student_history.semester_id != "SEMS2022" and student_history.student_id = '.$student_id.' and (grade != "C-" and  grade != "D+" and  grade != "D" and  grade != "D-" and  grade != "F");');
+
+while ($rows5 = $result5->fetch()){
+$completedCoursesArray[] = $rows5['course_id'];
+}
+
+//get all in porgress courses student taking
+$inprogressCoursesArray = array();
+$result6 = $db->query('select course_id from student_history
+inner join semester on semester.semester_id = student_history.semester_id
+where student_history.semester_id = "SEMS2022" and student_history.student_id = '.$student_id.';');
+
+while ($rows6 = $result6->fetch()){
+$inprogressCoursesArray[] = $rows6['course_id'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -173,6 +213,8 @@ $courses_statement3->closeCursor();
                 <p class="px-5 py-1 text-base text-gray-600">Major: <?php echo $major_name; ?></p>
                 <p class="px-5 py-1 text-base text-gray-600">Deparmtent: <?php echo $department_name; ?></p>
                 <p class="px-5 py-1 text-base text-green-600">GPA: <?php echo number_format((float)$gpa, 2, '.', ''); ?></p>
+                <p class="px-5 py-1 text-base text-gray-600">Current Completed Credits: <?php echo $currentCourseSum; ?></p>
+                <p class="px-5 py-1 text-base text-gray-600">Total Required Credits: <?php echo $requiredCourseSum; ?></p>
             </div>
         </div>
         
@@ -228,7 +270,10 @@ $courses_statement3->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['crn']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_id']?>  </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">Spring 2022</td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php
+                                    $str = $course2['semester_name'];
+                                    echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
+                                    ?> </td>
                                     
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
@@ -249,6 +294,7 @@ $courses_statement3->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Credits </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Min Grade </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Completed </th>
  
 
                                 </tr>
@@ -259,6 +305,11 @@ $courses_statement3->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course3['course_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course3['course_credits']?>  </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course3['min_grade']?>  </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-blue-900 whitespace-nowrap dark:text-white"><?php if(in_array($course3['course_id'], $completedCoursesArray)){
+                                        ?><svg class="h-8 w-8 text-green-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M5 12l5 5l10 -10" /></svg> <?php
+                                    } else if(in_array($course3['course_id'], $inprogressCoursesArray)){
+                                            echo "In-progress";
+                                    }?>  </td>
                                     
                                 </tr><?php endforeach; ?> </tbody>
                         </table>

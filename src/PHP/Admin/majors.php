@@ -137,7 +137,7 @@ $courses_statement->closeCursor();
                 <span class="text-white-700">Major Type:</span>
                 <div class="mt-2">
                     <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio" name="majorType" value="undergraduate" <?php if (isset($_POST['majorType']) && $_POST['majorType'] == 'undergraduate') echo "checked";?>>
+                        <input  type="radio" class="form-radio" name="majorType" value="undergraduate" <?php if (isset($_POST['majorType']) && $_POST['majorType'] == 'undergraduate') echo "checked";?>>
                         <span class="ml-2">Undergraduate</span>
                     </label>
                     <label class="inline-flex items-center ml-6">
