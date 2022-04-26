@@ -36,6 +36,16 @@ $courses_statement->closeCursor();
 
 
         /* Custom style */
+                        .btn_remove_hold{
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #72778f;
+            text-align: center;
+            letter-spacing: .5px;
+            transition: background-color .2s ease-out;
+            cursor: pointer;
+        }
         .header-right {
             width: calc(100% - 3.5rem);
         }
@@ -69,9 +79,67 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        
+                <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <!-- add a select box containing options -->
+            <!-- for SELECT query -->
+            <h2 class="text-white">Select Department:</h2>
+            <div class="relative inline-block w-100 text-gray-700">
+                <select id="select" name="department_name" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                    <option value="'All Departments'">All Departments</option>
+                    <option value="'Accounting, Taxation & Business Law'">Accounting, Taxation & Business Law</option>
+                    <option value="'American Studies/Media & Communications'">American Studies/Media & Communications</option>
+                    <option value="'Biological Sciences'">Biological Sciences</option>
+                    <option value="'English'">English</option>
+                    <option value="'Exceptional Education & Learning'">Exceptional Education & Learning</option>
+                    <option value="'History & Philosophy'">History & Philosophy</option>
+                    <option value="'Mathematics, Computer & Information Science'">Mathematics, Computer & Information Science</option>
+                    <option value="'Modern Languages'">Modern Languages</option>
+                    <option value="'Politics, Economics & Law'">Politics, Economics & Law</option>
+                    <option value="'Psychology'">Psychology</option>
+                    <option value="'Public Health'">Public Health</option>
+                    <option value="'Visual Arts'">Visual Arts</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+            <input class="block mt-5" type="submit" value="Submit"></p>
+        </form>
+        <script type="text/javascript">
+            document.getElementById('select').value = "<?php echo $_POST['department_name'];?>";
+        </script>
+        <?php 
+                if(isset($_POST['department_name'])){
+                    $dep_name = $_POST['department_name'];
 
-        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Faculty</span>
+                    if($dep_name == "'All Departments'"){
+                        $query_courses = 'select * from user
+                        inner join faculty on faculty.faculty_id = user.user_id
+                        inner join department_faculty on department_faculty.faculty_id = faculty.faculty_id
+                        inner join department on department.department_id = department_faculty.department_id
+                        where user_type = "Faculty";';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else {
+                            $query_courses = 'select * from user
+                            inner join faculty on faculty.faculty_id = user.user_id
+                            inner join department_faculty on department_faculty.faculty_id = faculty.faculty_id
+                            inner join department on department.department_id = department_faculty.department_id
+                            where user_type = "Faculty" and department.department_name = '.$dep_name.';';
+                            $courses_statement = $db->prepare($query_courses);
+                            $courses_statement->execute();
+                            $courses = $courses_statement->fetchAll();
+                            $courses_statement->closeCursor();
+                    }
+                }
+          ?>
+
+        <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Faculty</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -89,6 +157,7 @@ $courses_statement->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> City </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> State </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Zip Code </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Schedule </th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
@@ -103,6 +172,8 @@ $courses_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['city']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['state']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['zip']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">                                    <a href="faculty_schedule.php?id=<?php echo $course['user_id']; ?>" class="btn_remove_hold">View Schedule <svg class="inline h-5 w-5 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="10" cy="10" r="7" />  <line x1="7" y1="10" x2="13" y2="10" />  <line x1="10" y1="7" x2="10" y2="13" />  <line x1="21" y1="21" x2="15" y2="15" /></svg></a>
+                                </td>
 
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
