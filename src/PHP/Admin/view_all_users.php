@@ -30,7 +30,16 @@ $courses_statement->closeCursor();
 <body>
         <style>
         
-
+                .btn_remove_hold{
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #F8646C;
+            text-align: center;
+            letter-spacing: .5px;
+            transition: background-color .2s ease-out;
+            cursor: pointer;
+        }
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -67,8 +76,51 @@ $courses_statement->closeCursor();
         </header>
         
 
-        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">All Users</span>
+        <span class="ml-8 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">View Users</span>
         <div class="mx-8 flex flex-col">
+            <form class="my-4"  method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <!-- add a select box containing options -->
+            <!-- for SELECT query -->
+            <h2 class="text-white">Select User Type:</h2>
+            <div class="relative inline-block w-100 text-gray-700">
+                <select id="select" name="user_type" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                    <option value="'All Users'">All Users</option>
+                    <option value="'Student'">Student</option>
+                    <option value="'Faculty'">Faculty</option>
+                    <option value="'Admin'">Admin</option>
+                    <option value="'Researcher'">Researcher</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+            <input class="block mt-5" type="submit" value="Submit"></p>
+        </form>
+        <script type="text/javascript">
+            document.getElementById('select').value = "<?php echo $_POST['user_type'];?>";
+        </script>
+        <?php 
+                if(isset($_POST['user_type'])){
+                    $user_type = $_POST['user_type'];
+
+                    if($user_type == "'All Users'"){
+                        $query_courses = 'select * from user';
+                        $courses_statement = $db->prepare($query_courses);
+                        $courses_statement->execute();
+                        $courses = $courses_statement->fetchAll();
+                        $courses_statement->closeCursor();
+                    }
+                    else {
+                    $query_courses = 'select * from user where user_type = '. $user_type. ';';
+                    $courses_statement = $db->prepare($query_courses);
+                    $courses_statement->execute();
+                    $courses = $courses_statement->fetchAll();
+                    $courses_statement->closeCursor();
+                    }
+                }
+          ?>
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow-md sm:rounded-lg">
@@ -85,6 +137,7 @@ $courses_statement->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> City </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> State </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Zip Code </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Delete User </th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
@@ -99,6 +152,8 @@ $courses_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['city']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['state']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['zip']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">                                    <a href="drop_user.php?id=<?php echo $course['user_id']; ?>" class="btn_remove_hold">Delete User <svg class="inline h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />  <line x1="18" y1="9" x2="12" y2="15" />  <line x1="12" y1="9" x2="18" y2="15" /></svg></a>
+                                </td>
 
                                 </tr><?php endforeach; ?> </tbody>
                         </table>

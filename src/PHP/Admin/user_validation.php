@@ -53,7 +53,7 @@ $student_id = rand(500000,599999);
 ?> <script type="text/javascript">
     let timerInterval
     Swal.fire({
-        title: 'User Updated Successfully...',
+        title: 'User Added Successfully...',
         allowOutsideClick: false,
         icon: "success",
         html: 'I will close in <b></b> milliseconds.',
