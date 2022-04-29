@@ -1,3 +1,4 @@
+<!-- Drop user page 1. Purpose is to confrim if admin wants to delete a user. If admins preses cancel, the admin is taken back to view_all_users.php. If admin selects delete admin is then taken to drop_user_confrim.php where the user is deleted. -->
 <!DOCTYPE html>
 <html lang="en">
 

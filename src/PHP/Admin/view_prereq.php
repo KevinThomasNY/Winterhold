@@ -1,3 +1,4 @@
+<!-- Display the prerequite courses for a class. If there is no prerequite course an alert pops up stating theres no prerequite and the option to go back to course catolog-->
 <?php 
 session_start();
 include("../db.php");
@@ -30,8 +31,6 @@ $courses_statement->closeCursor();
 
 <body>
     <style>
-        
-
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -47,8 +46,7 @@ $courses_statement->closeCursor();
             }
         }
     </style>
-    <!-- Sidebar -->
-        <?php include("./menu.php"); ?>
+    <!-- Sidebar --> <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
@@ -66,7 +64,7 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-<span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"> <?php 
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"> <?php 
             echo 'Prerequisites for '.$var_value.':';
             ?> </span>
         <div class="mx-8 flex flex-col">
@@ -81,13 +79,9 @@ $courses_statement->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Credits </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Department </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Minimum Grade </th>
-
                                 </tr>
-                            </thead>
-                            <?php $pre ?>
-                            <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                            </thead> <?php $pre ?> <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php $pre = $course['prereq_id']; echo $course['prereq_id']; ?> </td>
-                                    
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_credits']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['department_name']; ?> </td>
@@ -99,8 +93,6 @@ $courses_statement->closeCursor();
             </div>
         </div>
         </table>
-
-
         <script type="text/javascript">
             let x = document.getElementById("myTable").rows.length;
             if (x == 1) {
@@ -108,11 +100,11 @@ $courses_statement->closeCursor();
                     title: 'Warning!',
                     text: "<?php echo 'There are no prerequisites for '.$var_value.'' ?> ",
                     icon: 'info',
-                   type: "warning",
-                   confirmButtonText: 'Take me back to course catolog!',
+                    type: "warning",
+                    confirmButtonText: 'Take me back to course catolog!',
                 }).then(function() {
-    window.location = "home_course_catolog.php";
-});
+                    window.location = "home_course_catolog.php";
+                });
             }
         </script>
         <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">

@@ -1,4 +1,4 @@
-<?php 
+<!-- View all faculty members and view their class schedules. From the class schedules you can see how many students and their names in each class --> <?php 
 session_start();
 if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
   #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
@@ -32,11 +32,9 @@ $courses_statement->closeCursor();
 </head>
 
 <body>
-        <style>
-
-
+    <style>
         /* Custom style */
-                        .btn_remove_hold{
+        .btn_remove_hold {
             padding: 10px;
             text-decoration: none;
             color: #fff;
@@ -46,6 +44,7 @@ $courses_statement->closeCursor();
             transition: background-color .2s ease-out;
             cursor: pointer;
         }
+
         .header-right {
             width: calc(100% - 3.5rem);
         }
@@ -60,8 +59,7 @@ $courses_statement->closeCursor();
             }
         }
     </style>
-    <!-- Sidebar -->
-    <?php include("./menu.php"); ?>
+    <!-- Sidebar --> <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
@@ -79,7 +77,7 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-                <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <!-- add a select box containing options -->
             <!-- for SELECT query -->
             <h2 class="text-white">Select Department:</h2>
@@ -109,8 +107,7 @@ $courses_statement->closeCursor();
         </form>
         <script type="text/javascript">
             document.getElementById('select').value = "<?php echo $_POST['department_name'];?>";
-        </script>
-        <?php 
+        </script> <?php 
                 if(isset($_POST['department_name'])){
                     $dep_name = $_POST['department_name'];
 
@@ -137,9 +134,7 @@ $courses_statement->closeCursor();
                             $courses_statement->closeCursor();
                     }
                 }
-          ?>
-
-        <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Faculty</span>
+          ?> <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Faculty</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -147,7 +142,6 @@ $courses_statement->closeCursor();
                         <table class="min-w-full">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Faculty ID</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> First Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Last Name </th>
@@ -161,8 +155,6 @@ $courses_statement->closeCursor();
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-
-
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['user_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['first_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['last_name']; ?> </td>
@@ -172,9 +164,14 @@ $courses_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['city']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['state']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['zip']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">                                    <a href="faculty_schedule.php?id=<?php echo $course['user_id']; ?>" class="btn_remove_hold">View Schedule <svg class="inline h-5 w-5 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="10" cy="10" r="7" />  <line x1="7" y1="10" x2="13" y2="10" />  <line x1="10" y1="7" x2="10" y2="13" />  <line x1="21" y1="21" x2="15" y2="15" /></svg></a>
-                                </td>
-
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="faculty_schedule.php?id=<?php echo $course['user_id']; ?>" class="btn_remove_hold">View Schedule <svg class="inline h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <circle cx="10" cy="10" r="7" />
+                                                <line x1="7" y1="10" x2="13" y2="10" />
+                                                <line x1="10" y1="7" x2="10" y2="13" />
+                                                <line x1="21" y1="21" x2="15" y2="15" />
+                                            </svg></a>
+                                    </td>
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>

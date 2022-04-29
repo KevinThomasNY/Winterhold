@@ -1,3 +1,4 @@
+<!-- Degree Audit shows: GPA, course taken, current courses, and courses left from major/minor requirements -->
 <?php 
 session_start();
 if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {

@@ -40,7 +40,6 @@ $courses_statement->closeCursor();
             cursor: pointer;
         }
 
-
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -206,7 +205,7 @@ $courses_statement->closeCursor();
             </ul>
         </footer>
     </div>
-    <script src="../JavaScript/hamburger_menu.js"></script>
+    <script src="../../JavaScript/hamburger_menu.js"></script>
 </body>
 
 </html>

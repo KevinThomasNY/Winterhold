@@ -42,8 +42,8 @@ $student_hold_statement->closeCursor();
 </head>
 
 <body>
-        <style>
-        .btn_add_hold{
+    <style>
+        .btn_add_hold {
             padding: 5px 15px;
             text-decoration: none;
             color: #fff;
@@ -54,7 +54,7 @@ $student_hold_statement->closeCursor();
             cursor: pointer;
         }
 
-        .btn_remove_hold{
+        .btn_remove_hold {
             padding: 10px;
             text-decoration: none;
             color: #fff;
@@ -64,7 +64,8 @@ $student_hold_statement->closeCursor();
             transition: background-color .2s ease-out;
             cursor: pointer;
         }
-                .dataTables_wrapper .dataTables_filter input {
+
+        .dataTables_wrapper .dataTables_filter input {
             border: 1px solid #72778f !important;
             background-color: #72778f !important;
             margin-bottom: 1em;
@@ -100,7 +101,6 @@ $student_hold_statement->closeCursor();
             color: #fff !important;
         }
 
-
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -116,11 +116,8 @@ $student_hold_statement->closeCursor();
             }
         }
     </style>
-    
-    <!-- Sidebar -->
-    <?php include("./menu.php"); ?>
+    <!-- Sidebar --> <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
-    
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
             <nav class="navbar">
@@ -138,8 +135,7 @@ $student_hold_statement->closeCursor();
             </nav>
         </header>
         <span class="m-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Add a Student Hold</span>
-
-<div class="mx-8 my-4 flex flex-col">
+        <div class="mx-8 my-4 flex flex-col">
             <table id="example">
                 <thead>
                     <tr>
@@ -158,11 +154,8 @@ $student_hold_statement->closeCursor();
                         </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
-
-    </div>
-
+        </div>
         <span class="m-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Remove a Student Hold</span>
-
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -177,25 +170,20 @@ $student_hold_statement->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Remove Hold </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            <?php foreach ($student_holds as $student_hold) : ?>
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $student_hold['user_id']; ?> </td>
-                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $student_hold['first_name'] . ' ' . $student_hold['last_name']; ?> </td>
-                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['hold_type']; ?> </td>
-                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['date_added']; ?> </td>
-                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <a href="dropHold.php?id=<?php echo $student_hold['user_id']; ?>&hold=<?php echo $student_hold['hold_type']; ?>" class="btn_remove_hold">Remove Hold -</a>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            </tbody>
+                            <tbody> <?php foreach ($student_holds as $student_hold) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $student_hold['user_id']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $student_hold['first_name'] . ' ' . $student_hold['last_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['hold_type']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['date_added']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <a href="dropHold.php?id=<?php echo $student_hold['user_id']; ?>&hold=<?php echo $student_hold['hold_type']; ?>" class="btn_remove_hold">Remove Hold -</a>
+                                    </td>
+                                </tr> <?php endforeach; ?> </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        
         <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
@@ -205,7 +193,7 @@ $student_hold_statement->closeCursor();
             </ul>
         </footer>
     </div>
-        <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#example').DataTable();
         });

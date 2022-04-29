@@ -1,3 +1,4 @@
+<!-- Inserting user to user database table -->
 <!DOCTYPE html>
 <html lang="en">
 
