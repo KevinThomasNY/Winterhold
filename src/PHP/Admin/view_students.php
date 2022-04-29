@@ -110,7 +110,21 @@ $courses_statement->closeCursor();
             </nav>
         </header>
 
-        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800">All Students</span>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800"><?php 
+            if(!isset($_POST['student_type'])){ 
+               echo 'Viewing Graduate Students' ?> <?php } else { 
+                switch($_POST['student_type']){
+                   case "'Undergraduate'":
+                        echo 'Viewing Undergraduate Students';
+                        break;
+                   case "'Graduate'":
+                        echo 'Viewing Graduate Students';
+                        break;
+                   case "both":
+                        echo 'Viewing All Students';
+                        break;
+               }
+           } ?></span>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <div class="mt-4">
                 <p class="text-white">Select Student Type:</p>
@@ -129,7 +143,7 @@ $courses_statement->closeCursor();
                     </label>
                 </div>
             </div>
-            <input class="block rounded-lg mt-5 text-2xl text-white bg-[#f8646c] px-9 py-2.5" type="submit" value="Submit"></p>
+            <input class="block cursor-pointer rounded-lg mt-5 text-lg text-white bg-[#f8646c] px-9 py-2.5" type="submit" value="Submit"></p>
         </form>
 
         <?php
@@ -193,8 +207,8 @@ $courses_statement->closeCursor();
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
                             <form action="view_info.php" method="post">
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
-                                <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
-                                <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
+                                <input type="hidden" name="user_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="user_type" value="<?php echo $course['student_type'] ?>" />
                                 <input  type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
                             </form>
                         </td>

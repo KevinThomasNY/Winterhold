@@ -6,7 +6,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
   header('location:login.php');
 }
 include("../db.php");
-$student_id = $_POST['student_id'];
+$user_id = $_POST['user_id'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 $first_name = $_POST['first_name'];
@@ -71,7 +71,7 @@ $zip = $_POST['zip'];
         <span class="m-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php echo 'Edit ' . $first_name . "'s Info"; ?></span>
         <form action="update_info.php" method="post" class="m-8">
             <div class="relative z-0 mb-6 w-full group">
-                <input type="text" readonly  name="student_id" class="block py-2.5 px-0 w-full text-sm text-grey-900 bg-transparent border-0 border-b-2 border-white-300 appearance-none dark:text-white dark:border-white-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer" placeholder=" " required="" value="<?php echo $student_id ?>">
+                <input type="text" readonly  name="student_id" class="block py-2.5 px-0 w-full text-sm text-grey-900 bg-transparent border-0 border-b-2 border-white-300 appearance-none dark:text-white dark:border-white-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer" placeholder=" " required="" value="<?php echo $user_id ?>">
                 <label for="floating_email" class="absolute text-sm text-green-400 dark:text-white-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Student ID</label>
             </div>
             <div class="relative z-0 mb-6 w-full group">

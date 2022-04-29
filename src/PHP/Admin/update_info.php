@@ -27,7 +27,7 @@ else
 }
 $errorMsg = "";
 # Get data to input
-$student_id = $_POST['student_id'];
+$user_id = $_POST['student_id'];
 $first_name = filter_input(INPUT_POST, "first_name");
 $last_name = filter_input(INPUT_POST, "last_name");
 $email = filter_input(INPUT_POST, "email");
@@ -41,11 +41,11 @@ $date_of_birth = filter_input(INPUT_POST, "date_of_birth");
 
     try{
     #Update user table in database
-    $query = "UPDATE user SET first_name = '$first_name', last_name = '$last_name', date_of_birth = '$date_of_birth', address = '$address', city = '$city', state = '$state', zip = $zip where user_id = $student_id;";
+    $query = "UPDATE user SET first_name = '$first_name', last_name = '$last_name', date_of_birth = '$date_of_birth', address = '$address', city = '$city', state = '$state', zip = $zip where user_id = $user_id;";
     $stmt = $db->prepare($query);
     $stmt->execute();
     #Update Login table in database
-    $query2 = "UPDATE login SET email = '$email', password = '$password' where user_id = $student_id;";
+    $query2 = "UPDATE login SET email = '$email', password = '$password' where user_id = $user_id;";
     $stmt = $db->prepare($query2);
     $stmt->execute();
     #Below is the Javascript success alert message
@@ -74,7 +74,7 @@ $date_of_birth = filter_input(INPUT_POST, "date_of_birth");
             console.log('I was closed by the timer')
         }
     }).then(function() {
-        window.location = "view_students.php";
+        window.location = "view_all_users.php";
     })
     </script>
   <?php  

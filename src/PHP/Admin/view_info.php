@@ -12,8 +12,8 @@ else
 include ("../db.php");
 
 $first = $_POST['first_name'];
-$student_id = $_POST['student_id'];
-$student_type = $_POST['student_type'];
+$student_id = $_POST['user_id'];
+$student_type = $_POST['user_type'];
 
 $query_courses;
 // Below is the query if the student is a undergraduate_student
@@ -149,7 +149,7 @@ $courses_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <form action="edit_info.php" method="post">
                                             <input type="hidden" name="email" value="<?php echo $course['email'] ?>" />
-                                            <input type="hidden" name="student_id" value="<?php echo $student_id ?>" />
+                                            <input type="hidden" name="user_id" value="<?php echo $student_id ?>" />
                                             <input type="hidden" name="password" value="<?php echo $course['password'] ?>" />
                                             <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
                                             <input type="hidden" name="last_name" value="<?php echo $course['last_name'] ?>" />
