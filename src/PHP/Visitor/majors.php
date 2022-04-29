@@ -28,6 +28,11 @@ $courses_statement->closeCursor();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Majors</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../../resources/images/favicon.png"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../../css/home.css">
