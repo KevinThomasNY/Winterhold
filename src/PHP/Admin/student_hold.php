@@ -155,7 +155,7 @@ $student_hold_statement->closeCursor();
                         <td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?> </td>
                         <td><?php echo $user['student_type']?> </td>
                         <td>
-                            <a href="./addHold.php?id=<?php echo $user['user_id']; ?>" class="btn_add_hold">Add Hold +</a>
+                            <a href="./addHold.php?id=<?php echo $user['user_id']; ?>" class="btn_add_hold">Add Hold <svg class="inline h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />  <line x1="12" y1="8" x2="12" y2="16" />  <line x1="8" y1="12" x2="16" y2="12" /></svg></a>
                         </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
@@ -181,7 +181,7 @@ $student_hold_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['hold_type']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo  $student_hold['date_added']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <a href="dropHold.php?id=<?php echo $student_hold['user_id']; ?>&hold=<?php echo $student_hold['hold_type']; ?>" class="btn_remove_hold">Remove Hold -</a>
+                                        <a href="dropHold.php?id=<?php echo $student_hold['user_id']; ?>&hold=<?php echo $student_hold['hold_type']; ?>" class="btn_remove_hold">Remove Hold <svg class="inline h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />  <line x1="8" y1="12" x2="16" y2="12" /></svg></a>
                                     </td>
                                 </tr> <?php endforeach; ?> </tbody>
                         </table>

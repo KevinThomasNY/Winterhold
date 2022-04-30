@@ -120,7 +120,7 @@
                     <span class="ml-2 text-sm tracking-wide truncate">Academic Calendar</span>
                 </a>
             </li>
-                        <li>
+            <li>
                 <a href="view_all_users.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                     <span class="inline-flex justify-center items-center ml-4">
                         <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -161,6 +161,18 @@
                         </svg>
                     </span>
                     <span class="ml-2 text-sm tracking-wide truncate">Add User</span>
+                </a>
+            </li>
+            <li>
+                <a href="advisors.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <span class="inline-flex justify-center items-center ml-4">
+                        <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="8.5" cy="7" r="4" />
+                            <polyline points="17 11 19 13 23 9" />
+                        </svg>
+                    </span>
+                    <span class="ml-2 text-sm tracking-wide truncate">Advisors</span>
                 </a>
             </li>
             <li>
