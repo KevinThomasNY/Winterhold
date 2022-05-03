@@ -138,7 +138,7 @@ $courses_statement->closeCursor();
                     <option value="0"> - Select Major - </option> <?php foreach ($majors as $major) : ?> <option value="<?=$major['major_id'];?>"><?=$major['major_name'];?></option> <?php endforeach; ?>
                 </select>
                 <p class="text-white">Select The Minor Dropdown</p>
-                <select id="select_02" name="minor_id" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                <select id="select_02" name="minor_id" class=" w-full my-3 h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
                     <option value="0"> - Select Minor - </option> <?php foreach ($minors as $minor) : ?> <option value="<?=$minor['minor_id'];?>"><?=$minor['minor_name'];?></option> <?php endforeach; ?>
                 </select>
             </div>
