@@ -114,6 +114,7 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800">Change Major OR Change Minor  For Undergraduate Student</span>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <input type="hidden" name="student_id" value="<?= $student_id; ?>" />
             <!-- add a select box containing options -->
