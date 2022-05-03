@@ -37,8 +37,19 @@ $last_name = $rows['last_name'];
 $major_name = $rows['major_name'];
 $department_name = $rows['department_name'];
 }
-//Below get only the letter grade to calculate gpa
-//gpa is calulated by points divided by number of course taken
+//Get Minor Information
+$minor_id = null;
+$result = $db->query('SELECT minor.minor_id, minor.minor_name
+FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id
+WHERE EXISTS
+(SELECT minor.minor_id, minor.minor_name FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id WHERE student_id = '.$student_id.');');
+
+while ($rows = $result->fetch()){
+    $minor_id = $rows['minor_id'];
+    $minor_name = $rows['minor_name'];
+}
+
+//Gpa Calculations
 $gradesArray = array();
 $result2 = $db->query('select grade from student_history
 where student_history.semester_id != "SEMS2022" and student_id = '.$student_id.';');
@@ -158,6 +169,7 @@ $gradesArray[] = $rows2['grade'];
                 <p class="px-5 py-1 text-base text-gray-600">Major: <?php echo $major_name; ?></p>
                 <p class="px-5 py-1 text-base text-gray-600">Deparmtent: <?php echo $department_name; ?></p>
                 <p class="px-5 py-1 text-base text-green-600">GPA: <?php echo number_format((float)$gpa, 2, '.', ''); ?></p>
+                <p class="px-5 py-1 text-base text-gray-600"><?php if($minor_id == null){echo "No Minor";}else{echo "Minor: ".$minor_name;} ?></p>
             </div>
         </div>
         

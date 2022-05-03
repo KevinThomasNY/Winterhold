@@ -194,8 +194,8 @@ $courses_statement->closeCursor();
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
                             <form action="view_info.php" method="post">
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
-                                <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
-                                <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
+                                <input type="hidden" name="user_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="user_type" value="<?php echo $course['student_type'] ?>" />
                                 <input  type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
                             </form>
                         </td>

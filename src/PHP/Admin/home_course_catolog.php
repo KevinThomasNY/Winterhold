@@ -151,7 +151,7 @@ $courses_statement->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_credits']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['department_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="view_prereq.php?varname=<?php echo $course['course_id'] ?>">View Prerequisites</a> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-green-500 hover:underline" href="edit_prereq.php?varname=<?php echo $course['course_id'] ?>">Edit </a> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-green-500 hover:underline" href="edit_prereq.php?id=<?php echo $course['course_id'] ?>">Edit </a> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a class="font-medium text-red-600  hover:underline" href="drop_course.php?id=<?php echo $course['course_id'] ?>"> Delete Course</a> </td>
 
                                 </tr><?php endforeach;?> </tbody>

@@ -200,7 +200,7 @@
                     <span class="ml-2 text-sm tracking-wide truncate">Student hold</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="building.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                     <span class="inline-flex justify-center items-center ml-4">
                         <svg class="h-5 w-5 text-white"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,13 +209,21 @@
                     </span>
                     <span class="ml-2 text-sm tracking-wide truncate">Buildings</span>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="semester.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                     <span class="inline-flex justify-center items-center ml-4">
                     <svg class="h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="12" cy="12" r="10" />  <polyline points="12 6 12 12 16 14" /></svg>
                     </span>
                     <span class="ml-2 text-sm tracking-wide truncate">Semester Info</span>
+                </a>
+            </li>
+            <li>
+                <a href="time_slot.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <span class="inline-flex justify-center items-center ml-4">
+                    <svg class="h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="12" cy="12" r="10" />  <polyline points="12 6 12 12 16 14" /></svg>
+                    </span>
+                    <span class="ml-2 text-sm tracking-wide truncate">Time Slot</span>
                 </a>
             </li>
             <li>

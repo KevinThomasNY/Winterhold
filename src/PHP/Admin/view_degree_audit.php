@@ -49,7 +49,7 @@ while ($rows2 = $result2->fetch()){
 $gradesArray[] = $rows2['grade'];
 }
 
-//sum of required courses credits
+//sum of required courses credits Major
 $result3 = $db->query('select SUM(course_credits) from major_requirements
 inner join course on major_requirements.course_id = course.course_id
 where major_id ='. $major_id.';');
@@ -57,6 +57,7 @@ where major_id ='. $major_id.';');
 while ($rows3 = $result3->fetch()){
 $requiredCourseSum = $rows3['SUM(course_credits)'];
 }
+
 //sum of credits completed
 $result4 = $db->query('select SUM(course_credits) from student_history
 inner join student_major on student_history.student_id = student_major.student_id
@@ -108,6 +109,36 @@ where student_history.semester_id = "SEMS2022" and student_history.student_id = 
 
 while ($rows6 = $result6->fetch()){
 $inprogressCoursesArray[] = $rows6['course_id'];
+}
+//Get Minor Information
+$minor_id = null;
+$result = $db->query('SELECT minor.minor_id, minor.minor_name
+FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id
+WHERE EXISTS
+(SELECT minor.minor_id, minor.minor_name FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id WHERE student_id = '.$student_id.');');
+
+while ($rows = $result->fetch()){
+    $minor_id = $rows['minor_id'];
+    $minor_name = $rows['minor_name'];
+}
+//Below is the minor requirements query
+if($minor_id != null){
+    $query_minor_requirements = 'select * from minor_requirements
+    inner join course on minor_requirements.course_id = course.course_id
+    where minor_id ='. $minor_id.';';
+
+    $minors_statement = $db->prepare($query_minor_requirements);
+    $minors_statement->execute();
+    $minors = $minors_statement->fetchAll();
+    $minors_statement->closeCursor();
+    //sum of required courses credits Minor
+    $minor_total_credits = $db->query('select SUM(course_credits) from minor_requirements
+    inner join course on minor_requirements.course_id = course.course_id
+    where minor_id ='. $minor_id.';');
+
+    while ($rows = $minor_total_credits->fetch()){
+    $requiredCourseSumMinor = $rows['SUM(course_credits)'];
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -220,7 +251,9 @@ $inprogressCoursesArray[] = $rows6['course_id'];
                 <p class="px-5 py-1 text-base text-gray-600">Deparmtent: <?php echo $department_name; ?></p>
                 <p class="px-5 py-1 text-base text-green-600">GPA: <?php echo number_format((float)$gpa, 2, '.', ''); ?></p>
                 <p class="px-5 py-1 text-base text-gray-600">Current Completed Credits: <?php echo $currentCourseSum; ?></p>
-                <p class="px-5 py-1 text-base text-gray-600">Total Required Credits: <?php echo $requiredCourseSum; ?></p>
+                <p class="px-5 py-1 text-base text-gray-600">Major Total Required Credits: <?php echo $requiredCourseSum; ?></p>
+                <p class="px-5 py-1 text-base text-gray-600"><?php if($minor_id == null){echo "No Minor";}else{echo "Minor: ".$minor_name;} ?></p>
+                <p class="px-5 py-1 text-base text-gray-600"><?php if($minor_id == null){echo "";}else{echo "Minor Total Credits: ".$requiredCourseSumMinor;} ?></p>
             </div>
         </div>
         
@@ -323,6 +356,44 @@ $inprogressCoursesArray[] = $rows6['course_id'];
                 </div>
             </div>
         </div>
+        <!-- Minor Requirements table -->
+        <?php if($minor_id != null){ ?>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php echo "Courses Requirements for $minor_name"; ?></span>
+                <div class="mx-8 mb-8 flex flex-col">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow-md sm:rounded-lg">
+                        <table id="myTable" class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Credits </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Min Grade </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Completed </th>
+ 
+
+                                </tr>
+                            </thead>
+                            <?php $pre ?>
+                            <tbody> <?php foreach ($minors as $minor) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $minor['course_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $minor['course_id']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $minor['course_credits']?>  </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $minor['min_grade']?>  </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-blue-900 whitespace-nowrap dark:text-white"><?php if(in_array($minor['course_id'], $completedCoursesArray)){
+                                        ?><svg class="h-8 w-8 text-green-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M5 12l5 5l10 -10" /></svg> <?php
+                                    } else if(in_array($minor['course_id'], $inprogressCoursesArray)){
+                                            echo "In-progress";
+                                    }?>  </td>
+                                    
+                                </tr><?php endforeach; ?> </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
         <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
