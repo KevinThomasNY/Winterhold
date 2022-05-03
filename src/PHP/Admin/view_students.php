@@ -28,11 +28,6 @@ $courses_statement->closeCursor();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Students</title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="../../resources/images/favicon.png"
-    />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/master.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
@@ -43,9 +38,8 @@ $courses_statement->closeCursor();
 <body>
     <style>
         label {
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-        }
-
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
         .dataTables_wrapper .dataTables_filter input {
             border: 1px solid #72778f !important;
             background-color: #72778f !important;
@@ -115,29 +109,18 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800"><?php 
-            if(!isset($_POST['student_type'])){ 
-               echo 'Viewing Graduate Students' ?> <?php } else { 
-                switch($_POST['student_type']){
-                   case "'Undergraduate'":
-                        echo 'Viewing Undergraduate Students';
-                        break;
-                   case "'Graduate'":
-                        echo 'Viewing Graduate Students';
-                        break;
-                   case "both":
-                        echo 'Viewing All Students';
-                        break;
-               }
-           } ?></span>
+
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800">All Students</span>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <div class="mt-4">
                 <p class="text-white">Select Student Type:</p>
                 <div class="mt-2">
                     <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio" name="student_type" value="'Undergraduate'" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == "'Undergraduate'") echo "checked";?>>
+                        <input   type="radio" class="form-radio" name="student_type" value="'Undergraduate'" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == "'Undergraduate'") echo "checked";?>>
                         <span class="ml-2">Undergraduate</span>
-                    </label> <?php $donkey = "checked"; ?> <label class="inline-flex items-center ml-6">
+                    </label>
+                    <?php $donkey = "checked"; ?>
+                    <label class="inline-flex items-center ml-6">
                         <input type="radio" class="form-radio" name="student_type" value="'Graduate'" <?php if (isset($_POST['student_type']) && $_POST['student_type'] == "'Graduate'") echo "checked"; ?>>
                         <span class="ml-2">Graduate</span>
                     </label>
@@ -146,8 +129,10 @@ $courses_statement->closeCursor();
                     </label>
                 </div>
             </div>
-            <input class="block cursor-pointer rounded-lg mt-5 text-lg text-white bg-[#f8646c] px-9 py-2.5" type="submit" value="Submit"></p>
-        </form> <?php
+            <input class="block rounded-lg mt-5 text-2xl text-white bg-[#f8646c] px-9 py-2.5" type="submit" value="Submit"></p>
+        </form>
+
+        <?php
             if(isset($_POST['student_type'])){
                 $student_type = $_POST['student_type'];
                 if($student_type == "both"){
@@ -184,7 +169,9 @@ $courses_statement->closeCursor();
                     $courses_statement->closeCursor();
                 }
             }
-        ?> <div class="mx-8 my-4 flex flex-col">
+        ?>
+
+        <div class="mx-8 my-4 flex flex-col">
             <table id="example">
                 <thead>
                     <tr>
@@ -194,6 +181,7 @@ $courses_statement->closeCursor();
                         <th> Major </th>
                         <th> Info </th>
                         <th> Transcript </th>
+                        <th> Change Majors/Minors</th>
                         <th> Degree Audit</th>
                     </tr>
                 </thead>
@@ -206,9 +194,9 @@ $courses_statement->closeCursor();
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
                             <form action="view_info.php" method="post">
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
-                                <input type="hidden" name="user_id" value="<?php echo $course['student_id'] ?>" />
-                                <input type="hidden" name="user_type" value="<?php echo $course['student_type'] ?>" />
-                                <input type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
+                                <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
+                                <input  type="submit" name="whatever" value="View Info" id="hyperlink-style-button" />
                             </form>
                         </td>
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
@@ -216,15 +204,24 @@ $courses_statement->closeCursor();
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
                                 <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
                                 <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
-                                <input type="submit" name="whatever" value="View Transcript" id="transcript-btn" />
+                                <input  type="submit" name="whatever" value="View Transcript" id="transcript-btn" />
                             </form>
                         </td>
+
+                        <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+                            <?php if ($course['student_type'] == 'Undergraduate') : ?>
+                                <a href="changemajorsminors.php?student_id=<?php echo $course['student_id'] ?>">Change</a>
+                            <?php else: ?>
+                                <a href="changemajors.php?student_id=<?php echo $course['student_id'] ?>">Change</a>
+                            <?php endif;?>
+                        </td>
+                        
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
                             <form action="view_degree_audit.php" method="post">
                                 <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
                                 <input type="hidden" name="student_id" value="<?php echo $course['student_id'] ?>" />
                                 <input type="hidden" name="student_type" value="<?php echo $course['student_type'] ?>" />
-                                <input type="submit" name="whatever" value="View Degree Audit" id="degree-btn" />
+                                <input  type="submit" name="whatever" value="View Degree Audit" id="degree-btn" />
                             </form>
                         </td>
                     </tr><?php endforeach; ?> </tbody>

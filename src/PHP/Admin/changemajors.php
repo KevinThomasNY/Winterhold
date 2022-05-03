@@ -30,56 +30,40 @@ $courses_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Majors / Minors</title>
+    <title>Change Majors</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../../css/home.css">
 </head>
 
-<body> <?php
+<body>
+<?php
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $major_id = trim($_POST['major_id']);
-        $minor_id = trim($_POST['minor_id']);
         $student_id = trim($_POST['student_id']);
 
-        if (($major_id != 0) && ($minor_id == 0))
+        if ($major_id == 0)
         {
-            $date = date("m/d/Y");
-            $query = "update `student_major` set major_id = $major_id where student_id = '" . $student_id ."'";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
             header('location:./view_students.php');
             die();
         }
-        else if (($major_id == 0) && ($minor_id != 0)){
-            $date = date("m/d/Y");
-            $query = "update `student_minor` set minor_id = $minor_id where student_id = '" . $student_id ."'";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            header('location:./view_students.php');
-            die();
-        }
-        else if (($major_id != 0) && ($minor_id != 0)){
-            $date = date("m/d/Y");
-            $query = "update `student_major` set major_id = $major_id where student_id = '" . $student_id ."'";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
 
-            $query = "update `student_minor` set minor_id = $minor_id where student_id = '" . $student_id ."'";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            header('location:./view_students.php');
-            die();
-        }
+        $date = date("m/d/Y");
+
+        $query = "update `student_major` set major_id = $major_id where student_id = '" . $student_id ."'";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
 
         header('location:./view_students.php');
-        die();
     }
-?> <style>
+?>
+<style>
         .error {
             color: #F8646C;
         }
+
+
 
         /* Custom style */
         .header-right {
@@ -96,7 +80,8 @@ $courses_statement->closeCursor();
             }
         }
     </style>
-    <!-- Sidebar --> <?php include("./menu.php"); ?>
+    <!-- Sidebar -->
+    <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
@@ -114,35 +99,39 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark: text-blue-800">Change Major For Graduate Student</span>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <input type="hidden" name="student_id" value="<?= $student_id; ?>" />
+
             <!-- add a select box containing options -->
-            <!-- for SELECT query --> <?php
+            <!-- for SELECT query -->
+            <p class="text-white">Select The Major Button</p>
+
+            <?php
             // major
-            $query_major = 'select * from major where number_of_credits = 100';
+            $query_major = 'select * from major where number_of_credits < 100';
             $major_statement = $db->prepare($query_major);
             $major_statement->execute();
             $majors = $major_statement->fetchAll();
             $major_statement->closeCursor();
-
-            // minors
-            $query_minors = 'select * from minor;';
-            $minors_statement = $db->prepare($query_minors);
-            $minors_statement->execute();
-            $minors = $minors_statement->fetchAll();
-            $minors_statement->closeCursor();
-            ?> <div class="relative inline-block w-100 text-gray-700">
-                <p class="text-white">Select The Major dropdown</p>
-                <select id="select_01" name="major_id" class=" w-full my-3 h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
-                    <option value="0"> - Select Major - </option> <?php foreach ($majors as $major) : ?> <option value="<?=$major['major_id'];?>"><?=$major['major_name'];?></option> <?php endforeach; ?>
-                </select>
-                <p class="text-white">Select The Minor Dropdown</p>
-                <select id="select_02" name="minor_id" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
-                    <option value="0"> - Select Minor - </option> <?php foreach ($minors as $minor) : ?> <option value="<?=$minor['minor_id'];?>"><?=$minor['minor_name'];?></option> <?php endforeach; ?>
-                </select>
+            ?>
+            <div class="relative inline-block w-100 text-gray-700 text-center" style="width:50%;margin:0 auto;text-align: center">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <select id="select_01" name="major_id" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                                <option value="0"> - Select Major - </option>
+                                <?php foreach ($majors as $major) : ?>
+                                    <option value="<?=$major['major_id'];?>"><?=$major['major_name'];?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <input class="block mt-5" type="submit" value="Submit"></p>
         </form>
+
         <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
