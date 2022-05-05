@@ -31,7 +31,7 @@ $student_id = trim($_GET['id']);
 $faculty_id = trim($_GET['faculty_id']);
 $date = date("m/d/Y");
 try {
-    $query = "insert into advisor (faculty_id,student_id,date_of_assignment) value ($faculty_id,$student_id,'$date')";
+    $query = "insert into advisor (faculty_id,student_id,date_of_assignment) values ($faculty_id,$student_id,'$date')";
     $stmt = $db->prepare($query);
     $stmt->execute();
 ?> <script type="text/javascript">

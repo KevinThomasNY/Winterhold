@@ -85,6 +85,7 @@ $courses_statement->closeCursor();
             width: 16rem;
         }
 
+
         @media only screen and (min-width: 768px) {
             .header-right {
                 width: calc(100% - 16rem);
@@ -179,6 +180,7 @@ $courses_statement->closeCursor();
                         <th> Name </th>
                         <th> Student Type </th>
                         <th> Major </th>
+                        <!-- <th> Schedule </th> -->
                         <th> Info </th>
                         <th> Transcript </th>
                         <th> Change Majors/Minors</th>
@@ -190,6 +192,14 @@ $courses_statement->closeCursor();
                         <td><?php echo $course['first_name']." ".$course['last_name']; ?> </td>
                         <td><?php echo $course['student_type']; ?> </td>
                         <td><?php echo $course['major_name']; ?> </td>
+                        <!-- <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
+                            <form action="add_course_student.php" method="post">
+                                <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
+                                <input type="hidden" name="user_id" value="<?php echo $course['student_id'] ?>" />
+                                <input type="hidden" name="user_type" value="<?php echo $course['student_type'] ?>" />
+                                <input  type="submit" name="whatever" value="Schedule" id="schedule-button" />
+                            </form>
+                        </td> -->
                         <!-- Passing the data below using a hidden form, therefore, the values are not shown in the URL -->
                         <td class="py-4 px-6 text-sm font-medium whitespace-nowrap ">
                             <form action="view_info.php" method="post">

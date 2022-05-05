@@ -65,6 +65,20 @@ Post is better than get becuase the data is not shown in the Url this is importa
   cursor: pointer;
   cursor: hand;
 }
+#schedule-button {
+  background: none;
+  border: 0;
+  color: brown;
+  text-decoration: none;
+}
+#schedule-button:hover {
+  background: none;
+  border: 0;
+  color: brown;
+  text-decoration: underline;
+  cursor: pointer;
+  cursor: hand;
+}
 #transcript-btn {
   background: none;
   border: 0;

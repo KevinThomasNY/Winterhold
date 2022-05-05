@@ -8,10 +8,11 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 include("../db.php");
 
 
-$query_courses = 'select * from user
+$query_courses = 'select distinct user.user_id, user.first_name, user.last_name, department.department_name, user.date_of_birth, user.address, user.city, user.state, user.zip  from user
 inner join faculty on faculty.faculty_id = user.user_id
 inner join department_faculty on department_faculty.faculty_id = faculty.faculty_id
 inner join department on department.department_id = department_faculty.department_id
+inner join faculty_history on faculty.faculty_id = faculty_history.faculty_id
 where user_type = "Faculty";';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
@@ -117,10 +118,11 @@ $courses_statement->closeCursor();
                     $dep_name = $_POST['department_name'];
 
                     if($dep_name == "'All Departments'"){
-                        $query_courses = 'select * from user
+                        $query_courses = 'select distinct user.user_id, user.first_name, user.last_name, department.department_name, user.date_of_birth, user.address, user.city, user.state, user.zip  from user
                         inner join faculty on faculty.faculty_id = user.user_id
                         inner join department_faculty on department_faculty.faculty_id = faculty.faculty_id
                         inner join department on department.department_id = department_faculty.department_id
+                        inner join faculty_history on faculty.faculty_id = faculty_history.faculty_id
                         where user_type = "Faculty";';
                         $courses_statement = $db->prepare($query_courses);
                         $courses_statement->execute();
@@ -128,9 +130,10 @@ $courses_statement->closeCursor();
                         $courses_statement->closeCursor();
                     }
                     else {
-                            $query_courses = 'select * from user
+                            $query_courses = 'select distinct user.user_id, user.first_name, user.last_name, department.department_name, user.date_of_birth, user.address, user.city, user.state, user.zip from user
                             inner join faculty on faculty.faculty_id = user.user_id
                             inner join department_faculty on department_faculty.faculty_id = faculty.faculty_id
+                            inner join faculty_history on faculty.faculty_id = faculty_history.faculty_id
                             inner join department on department.department_id = department_faculty.department_id
                             where user_type = "Faculty" and department.department_name = '.$dep_name.';';
                             $courses_statement = $db->prepare($query_courses);
