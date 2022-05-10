@@ -122,6 +122,12 @@ $courses_statement->closeCursor();
                                     else if( $course['day_id'] == "TR"){
                                         echo "Tuesday/Thursday";
                                     }
+                                    else if( $course['day_id'] == "F"){
+                                        echo "Friday";
+                                    }
+                                    else{
+                                        echo $course['day_id'];
+                                    }
                                     ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_start']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_end']; ?> </td>

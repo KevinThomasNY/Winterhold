@@ -300,8 +300,8 @@ if($minor_id != null){
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Semester</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Grade So Far In Course (GPA Not Calculated until gradding deadline)</th>
  
-
                                 </tr>
                             </thead>
                             <?php $pre ?>
@@ -313,6 +313,7 @@ if($minor_id != null){
                                     $str = $course2['semester_name'];
                                     echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
                                     ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['grade']?>  </td>
                                     
                                 </tr><?php endforeach; ?> </tbody>
                         </table>

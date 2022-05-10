@@ -27,11 +27,7 @@ $courses_statement->closeCursor();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Slot</title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="../../resources/images/favicon.png"
-    />
+    <link rel="shortcut icon" type="image/png" href="../../resources/images/favicon.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/home.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -39,8 +35,6 @@ $courses_statement->closeCursor();
 
 <body>
     <style>
-        
-
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -56,8 +50,7 @@ $courses_statement->closeCursor();
             }
         }
     </style>
-    <!-- Sidebar -->
-        <?php include("./menu.php"); ?>
+    <!-- Sidebar --> <?php include("./menu.php"); ?>
     <!-- ./Sidebar -->
     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
@@ -75,33 +68,32 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-
         <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Add Time Slot</span>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <h2 class="mt-3 text-white">Select Days:</h2>
-            <input type="checkbox"  name="day[]" value="M">
+            <input type="checkbox" name="day[]" value="M">
             <label> Monday</label><br>
-            <input type="checkbox"  name="day[]" value="T">
+            <input type="checkbox" name="day[]" value="T">
             <label> Tuesday</label><br>
-            <input type="checkbox"  name="day[]" value="W">
+            <input type="checkbox" name="day[]" value="W">
             <label> Wednesday</label><br>
-            <input type="checkbox"  name="day[]" value="R">
+            <input type="checkbox" name="day[]" value="R">
             <label> Thursday</label><br>
-            <input type="checkbox"  name="day[]" value="F">
-            <label > Friday</label><br>
-            
+            <input type="checkbox" name="day[]" value="F">
+            <label> Friday</label><br>
             <h2 class="mt-3 text-white">Start Time:</h2>
-            <input style="color: #000000;"  type="time"  name="start" required>
+            <input style="color: #000000;" type="time" name="start" required>
             <h2 class="mt-3 text-white">End Time:</h2>
-            <input style="color: #000000;"  type="time"  name="end" >
+            <input style="color: #000000;" type="time" name="end" required>
             <input class="block mt-5" type="submit" value="Submit"></p>
-        </form>
-        <?php
-            $selected_days = null;
+        </form> <?php
+            $selected_days = array();
             if(isset($_POST["day"])){
                 foreach($_POST["day"] as $value) {
-                 $selected_days = $value;
+                 $selected_days[] = $value;
                 }
+            //The join funtion returns a string from an array.
+            $selected_days = join($selected_days);
             //Get Start Time
             $start_time = $_POST["start"];
             $start_time = date("g:ia", strtotime("$start_time"));
@@ -151,17 +143,17 @@ $courses_statement->closeCursor();
                 }
                 catch(PDOException $e) {
                 ?> <script type="text/javascript">
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error...',
-                        text: 'Something went wrong',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        confirmButtonText: 'Take me back!',
-                    }).then(function() {
-                        window.location = "time_slot.php";
-                    })
-                </script> <?php
+            Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'Something went wrong',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: 'Take me back!',
+            }).then(function() {
+                window.location = "time_slot.php";
+            })
+        </script> <?php
                 }
             }
             //Check if Selected days already exists
@@ -206,24 +198,23 @@ $courses_statement->closeCursor();
                 }
                 catch(PDOException $e) {
                 ?> <script type="text/javascript">
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error...',
-                        text: 'Something went wrong',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        confirmButtonText: 'Take me back!',
-                    }).then(function() {
-                        window.location = "time_slot.php";
-                    })
-                </script> <?php
+            Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'Something went wrong',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: 'Take me back!',
+            }).then(function() {
+                window.location = "time_slot.php";
+            })
+        </script> <?php
                 }
             }
         
         }
     
-        ?>
-        <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Time Slot's</span>
+        ?> <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Time Slot's</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -231,7 +222,6 @@ $courses_statement->closeCursor();
                         <table class="min-w-full">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Time Slot ID </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Days</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Period Start Time</th>
@@ -239,13 +229,10 @@ $courses_statement->closeCursor();
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-
-
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['time_slot_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['day_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_start']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_end']; ?> </td>
-
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>

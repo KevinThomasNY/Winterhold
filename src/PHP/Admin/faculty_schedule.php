@@ -43,6 +43,17 @@ $courses_statement->closeCursor();
 
 <body>
     <style>
+                .btn_remove_hold {
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #72778f;
+            text-align: center;
+            letter-spacing: .5px;
+            transition: background-color .2s ease-out;
+            cursor: pointer;
+        }
+
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -79,7 +90,7 @@ $courses_statement->closeCursor();
         
 
         
-        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Schedule Spring 2022</span>
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Schedule For Spring 2022</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -95,6 +106,7 @@ $courses_statement->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Day</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Start Time</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">End Time</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">View Students</th>
                                 </tr>
                             </thead>  <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['crn']; ?> </td>
@@ -119,9 +131,23 @@ $courses_statement->closeCursor();
                                     else if( $course['day_id'] == "TR"){
                                         echo "Tuesday/Thursday";
                                     }
+                                    else if( $course['day_id'] == "F"){
+                                        echo "Friday";
+                                    }
+                                    else {
+                                        echo $course['day_id'];
+                                    }
                                     ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_start']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_end']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="view_faculty_students.php?id=<?php echo $course['crn']; ?>&course_name=<?php echo $course['course_name']; ?>" class="btn_remove_hold">View Students <svg class="inline h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                    <circle cx="10" cy="10" r="7" />
+                                    <line x1="7" y1="10" x2="13" y2="10" />
+                                    <line x1="10" y1="7" x2="10" y2="13" />
+                                    <line x1="21" y1="21" x2="15" y2="15" />
+                                            </svg></a>
+                                    </td>
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
                     </div>
@@ -133,7 +159,7 @@ $courses_statement->closeCursor();
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="view_students.php">Go Back To View Students</a></button>
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="view_faculty.php">Go Back To View Faculty</a></button>
                 </li>
             </ul>
         </footer>
