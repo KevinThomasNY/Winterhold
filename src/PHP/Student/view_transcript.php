@@ -1,3 +1,4 @@
+<!-- View the courses student has completed and GPA -->
 <?php 
 session_start();
 if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
@@ -6,25 +7,54 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
   header('location:login.php');
 }
 include("../db.php");
+//get variables from form in view_student.php
+$student_id = $_SESSION['sess_user_id'];
 
-$id = $_SESSION['sess_user_id'];
-$query_courses = "select class_section.crn, class_section.course_name, course.course_id, department.department_name,  class_section.section, user.first_name, user.last_name, building.building_name, room.room_number, ts_day.day_id, period.period_start, period.period_end, semester.semester_name, class_section.available_seats   from class_section
-inner join department_faculty on class_section.faculty_id = department_faculty.faculty_id
-inner join department on department_faculty.department_id = department.department_id
-inner join faculty on department_faculty.faculty_id = faculty.faculty_id
-inner join user on faculty.faculty_id = user.user_id
-inner join building on class_section.building_id = building.building_id
-inner join room on class_section.room_id = room.room_id
-inner join course on class_section.course_name = course.course_name
-inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
-inner join ts_day on time_slot.day_id = ts_day.time_slot_day
-inner join period on time_slot.period_id = period.period_id
-inner join semester on class_section.semester_id = semester.semester_id
-where class_section.semester_id = 'SEMS2022' and user.user_id = $id order by course.course_id";
+$query_courses = 'select * from student_history
+inner join student_major on student_history.student_id = student_major.student_id
+inner join major on major.major_id = student_major.major_id
+inner join semester on semester.semester_id = student_history.semester_id
+inner join course on course.course_id = student_history.course_id
+where student_history.semester_id != "SEMS2022" and student_history.student_id = '.$student_id.';';
+
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
+
+//The below query is used to in the student information section
+$result = $db->query('select user.last_name, major.major_name, department.department_name from user
+inner join student on student.student_id = user.user_id
+inner join student_major on  student_major.student_id = student.student_id
+inner join major on major.major_id = student_major.major_id
+inner join department on major.department_id = department.department_id
+where user.user_id = '.$student_id.';');
+
+while ($rows = $result->fetch()){
+$last_name = $rows['last_name'];
+$major_name = $rows['major_name'];
+$department_name = $rows['department_name'];
+}
+//Get Minor Information
+$minor_id = null;
+$result = $db->query('SELECT minor.minor_id, minor.minor_name
+FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id
+WHERE EXISTS
+(SELECT minor.minor_id, minor.minor_name FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id WHERE student_id = '.$student_id.');');
+
+while ($rows = $result->fetch()){
+    $minor_id = $rows['minor_id'];
+    $minor_name = $rows['minor_name'];
+}
+
+//Gpa Calculations
+$gradesArray = array();
+$result2 = $db->query('select grade from student_history
+where student_history.semester_id != "SEMS2022" and student_id = '.$student_id.';');
+
+while ($rows2 = $result2->fetch()){
+$gradesArray[] = $rows2['grade'];
+}
 
 
 ?>
@@ -35,54 +65,19 @@ $courses_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Homepage</title>
+    <title>Transcript</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../../resources/images/favicon.png"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../../css/master.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="../../css/home.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-        <style>
-        <style>
-        .dataTables_wrapper .dataTables_filter input {
-            border: 1px solid #72778f !important;
-            background-color: #72778f !important;
-            margin-bottom: 1em;
-        }
-
-        .dataTables_wrapper .dataTables_length select {
-            border: 1px solid #aaa;
-            border-radius: 3px;
-            padding: 5px;
-            background-color: #333645;
-            padding: 4px;
-        }
-
-        label {
-            color: #fff;
-        }
-
-        .dataTables_wrapper .dataTables_length,
-        .dataTables_wrapper .dataTables_filter,
-        .dataTables_wrapper .dataTables_info,
-        .dataTables_wrapper .dataTables_processing,
-        .dataTables_wrapper .dataTables_paginate {
-            color: #fff;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
-            color: #fff !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            color: #fff !important;
-        }
-        
-
+    <style>
         /* Custom style */
         .header-right {
             width: calc(100% - 3.5rem);
@@ -251,8 +246,7 @@ $courses_statement->closeCursor();
         </div>
     </div>
     <!-- ./Sidebar -->
-
-     <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
+    <div class="h-full ml-14 mt-14 mb-10 md:ml-64 ">
         <header class="header m-8">
             <nav class="navbar">
                 <a href="../../home.html" class="nav-logo">Winterhold University</a>
@@ -268,156 +262,108 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        <script type="text/javascript">
-            document.getElementById('s_sem').value = "<?php echo $_POST['semester_name'];?>";
-        </script>
-        <script type="text/javascript">
-            document.getElementById('s_dep').value = "<?php echo $_POST['department_name'];?>";
-        </script> <?php 
-            if(isset($_POST['department_name']) && $_POST['semester_name']){
-                $sem_name = $_POST['semester_name'];
-                $dep_name = $_POST['department_name'];
-                if($dep_name == "'All Departments'"){
-                    $query_courses = 'select class_section.crn, class_section.course_name, course.course_id, department.department_name,  class_section.section, user.first_name, user.last_name, building.building_name, room.room_number, ts_day.day_id, period.period_start, period.period_end, semester.semester_name, class_section.available_seats   from class_section
-                    inner join department_faculty on class_section.faculty_id = department_faculty.faculty_id
-                    inner join department on department_faculty.department_id = department.department_id
-                    inner join faculty on department_faculty.faculty_id = faculty.faculty_id
-                    inner join user on faculty.faculty_id = user.user_id
-                    inner join building on class_section.building_id = building.building_id
-                    inner join room on class_section.room_id = room.room_id
-                    inner join course on class_section.course_name = course.course_name
-                    inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
-                    inner join ts_day on time_slot.day_id = ts_day.time_slot_day
-                    inner join period on time_slot.period_id = period.period_id
-                    inner join semester on class_section.semester_id = semester.semester_id
-                    where class_section.semester_id = '." $sem_name ". ' and user.user_id = '. $id .' order by course.course_id;';
-
-                    $courses_statement = $db->prepare($query_courses);
-                    $courses_statement->execute();
-                    $courses = $courses_statement->fetchAll();
-                    $courses_statement->closeCursor();
+        <?php
+            $gpa = 0.00;
+            $points = 0;
+            $gradesArrayLength = count($gradesArray);
+            if(count($gradesArray) > 0){
+                foreach($gradesArray as $grade){
+                    switch($grade){
+                        case "A":
+                            $points += 4.00;
+                            break;
+                        case "A-":
+                            $points += 3.70;
+                            break;
+                        case "B+":
+                            $points += 3.30;
+                            break;
+                        case "B":
+                            $points += 3.00;
+                            break;
+                        case "B-":
+                            $points += 2.70;
+                            break;
+                        case "C+":
+                            $points += 2.30;
+                            break;
+                        case "C":
+                            $points += 2.00;
+                            break;
+                        case "C-":
+                            $points += 1.70;
+                            break;
+                        case "D+":
+                            $points += 1.30;
+                            break;
+                        case "D":
+                            $points += 1.00;
+                            break;
+                        case "D-":
+                            $points += 0.70;
+                            break;
+                        case "F":
+                            $points += 0.00;
+                            break;
+                    }
                 }
-                else{
-                    $query_courses = 'select class_section.crn, class_section.course_name, course.course_id, department.department_name,  class_section.section, user.first_name, user.last_name, building.building_name, room.room_number, ts_day.day_id, period.period_start, period.period_end, semester.semester_name, class_section.available_seats   from class_section
-                    inner join department_faculty on class_section.faculty_id = department_faculty.faculty_id
-                    inner join department on department_faculty.department_id = department.department_id
-                    inner join faculty on department_faculty.faculty_id = faculty.faculty_id
-                    inner join user on faculty.faculty_id = user.user_id
-                    inner join building on class_section.building_id = building.building_id
-                    inner join room on class_section.room_id = room.room_id
-                    inner join course on class_section.course_name = course.course_name
-                    inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
-                    inner join ts_day on time_slot.day_id = ts_day.time_slot_day
-                    inner join period on time_slot.period_id = period.period_id
-                    inner join semester on class_section.semester_id = semester.semester_id
-                    where class_section.semester_id = '." $sem_name ". ' and user.user_id = '. $id .' 
-                    and department.department_name = '." $dep_name ".'
-                    order by course.course_id;';
-                    $courses_statement = $db->prepare($query_courses);
-                    $courses_statement->execute();
-                    $courses = $courses_statement->fetchAll();
-                    $courses_statement->closeCursor();
-                }
+                $gpa = $points / $gradesArrayLength;
             }
-
-        ?> <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"> <?php 
-            if(!isset($_POST['semester_name'])){ 
-               echo 'Master Schedule Spring 2022' ?> <?php } else { 
-               switch($_POST['semester_name']){
-                   case "'SEMF2022'":
-                        echo 'Master Schedule Fall 2022';
-                        break;
-                   case "'SEMS2022'":
-                        echo 'Master Schedule Spring 2022';
-                        break;
-                   case "'SEMF2021'":
-                        echo 'Master Schedule Fall 2021';
-                        break;
-                   case "'SEMS2021'":
-                        echo 'Master Schedule Spring 2021';
-                        break;
-                   case "'SEMF2020'":
-                        echo 'Master Schedule Fall 2020';
-                        break;
-                   case "'SEMS2020'":
-                        echo 'Master Schedule Spring 2020';
-                        break;
-                   case "'SEMF2019'":
-                        echo 'Master Schedule Fall 2019';
-                        break;
-                   case "'SEMS2019'":
-                        echo 'Master Schedule Spring 2019';
-                        break;
-                   case "'SEMF2018'":
-                        echo 'Master Schedule Fall 2018';
-                        break;
-                   case "'SEMS2018'":
-                        echo 'Master Schedule Spring 2018';
-                        break;
-                   case "'SEMF2017'":
-                        echo 'Master Schedule Fall 2017';
-                        break;
-                   case "'SEMS2017'":
-                        echo 'Master Schedule Spring 2017';
-                        break;
-               }
-           } ?> </span>
-        <div class="mx-8 my-4 flex flex-col">
-            <table id="example">
-                <thead>
-                    <tr>
-                        <th> CRN </th>
-                        <th> Course Name </th>
-                        <th> Course # </th>
-                        <th> Department </th>
-                        <th> Section </th>
-                        <th> Professor </th>
-                        <th> Building </th>
-                        <th> Room # </th>
-                        <th> DAY </th>
-                        <th> Start Time </th>
-                        <th> End Time </th>
-                        <th> Semester </th>
-                        <th> Avaliable Seats </th>
-                    </tr>
-                </thead>
-                <tbody> <?php foreach ($courses as $course) : ?> <tr class="hover:bg-gray-50">
-                        <td><?php echo $course['crn']; ?> </td>
-                        <td><?php echo $course['course_name']; ?> </td>
-                        <td><?php echo $course['course_id']; ?> </td>
-                        <td><?php echo $course['department_name']; ?> </td>
-                        <td><?php echo $course['section']; ?> </td>
-                        <td><?php echo $course['first_name']." ".$course['last_name']; ?> </td>
-                        <td><?php echo $course['building_name']; ?> </td>
-                        <td><?php echo $course['room_number']; ?> </td>
-                        <td><?php echo $course['day_id']; ?> </td>
-                        <td><?php echo $course['period_start']; ?> </td>
-                        <td><?php echo $course['period_end']; ?> </td>
-                        <td><?php
-                        $str = $course['semester_name'];
-                        echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
-                        ?> </td>
-                        <td><?php
-                        $rand = rand(0,29);
-                        echo ($course['available_seats'] - $rand); ?> </td>
-                    </tr><?php endforeach; ?> </tbody>
-            </table>
+        ?>
+        <div class="m-8 relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="py-.5 bg-white hover:bg-gray-100">
+                <h1 class="px-5 py-3 text-xl text-black">Student Information</h1>
+                <p class="px-5 py-1 text-base text-gray-600">Student Name:  <?php echo $first . " " . $last_name; ?> </p>
+                <p class="px-5 py-1 text-base text-gray-600">Student ID: <?php echo $student_id; ?></p>
+                <p class="px-5 py-1 text-base text-gray-600">Major: <?php echo $major_name; ?></p>
+                <p class="px-5 py-1 text-base text-gray-600">Deparmtent: <?php echo $department_name; ?></p>
+                <p class="px-5 py-1 text-base text-green-600">GPA: <?php echo number_format((float)$gpa, 2, '.', ''); ?></p>
+                <p class="px-5 py-1 text-base text-gray-600"><?php if($minor_id == null){echo "No Minor";}else{echo "Minor: ".$minor_name;} ?></p>
+            </div>
         </div>
-        <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
-            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
+        
+        <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php echo $first . " " . $last_name ."'s Transcript"; ?></span>
+        <div class="mx-8 flex flex-col">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow-md sm:rounded-lg">
+                        <table id="myTable" class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> CRN </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Grade</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Credits</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Semester</th>
+                                </tr>
+                            </thead> <?php $pre ?> <tbody> <?php foreach ($courses as $course) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['crn']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_id']?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['grade']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_credits']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php
+                                    $str = $course['semester_name'];
+                                    echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
+                                    ?> </td>
+                                </tr><?php endforeach; ?> </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </table>
+        <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6 ">Back To Top</a>
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="view_students.php">Go Back To View Students</a></button>
                 </li>
             </ul>
         </footer>
     </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
-    <script src="../../JavaScript/hamburger_menu.js"></script>
+    <script src="../JavaScript/hamburger_menu.js"></script>
 </body>
 
 </html>

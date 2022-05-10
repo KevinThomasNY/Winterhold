@@ -20,6 +20,18 @@ $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
+//Fall 2022
+$query_courses2 = 'select faculty_history.crn, course.course_name, course.course_id, course.course_credits, class_section.section, ts_day.day_id, period.period_start, period.period_end from faculty_history
+inner join class_section on faculty_history.crn = class_section.crn
+inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
+inner join ts_day on time_slot.day_id = ts_day.time_slot_day
+inner join period on time_slot.period_id = period.period_id
+inner join course on class_section.course_name = course.course_name
+where faculty_history.faculty_id = '.$user_id.' and faculty_history.semester_id = "SEMF2022";';
+$courses_statement2 = $db->prepare($query_courses2);
+$courses_statement2->execute();
+$courses2 = $courses_statement2->fetchAll();
+$courses_statement2->closeCursor();
 
 
 ?>
@@ -91,7 +103,7 @@ $courses_statement->closeCursor();
 
         
         <span class="mx-8 bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Schedule For Spring 2022</span>
-        <div class="mx-8 flex flex-col">
+        <div class="mx-8 my-7 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow-md sm:rounded-lg">
@@ -154,7 +166,70 @@ $courses_statement->closeCursor();
                 </div>
             </div>
         </div>
-        </table>
+        <span class="mx-8  bg-blue-100 text-blue-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Schedule For Fall 2022</span>
+        <div class="mx-8 m-4 flex flex-col">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow-md sm:rounded-lg">
+                        <table id="myTable" class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> CRN </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Course Credits</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Section</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Day</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Start Time</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">End Time</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">View Students</th>
+                                </tr>
+                            </thead>  <tbody> <?php foreach ($courses2 as $course2) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['crn']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_name']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_id']?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_credits']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['section']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php if( $course2['day_id'] == "MT"){
+                                        echo "Monday/Tuesday";
+                                    }else if( $course2['day_id'] == "TW"){
+                                        echo "Tuesday/Wednesday";
+                                    }
+                                    else if( $course2['day_id'] == "WR"){
+                                        echo "Wednesday/Thursday";
+                                    }
+                                    else if( $course2['day_id'] == "RF"){
+                                        echo "Thursday/Friday";
+                                    }
+                                    else if( $course2['day_id'] == "MW"){
+                                        echo "Monday/Wednesday";
+                                    }
+                                    else if( $course2['day_id'] == "TR"){
+                                        echo "Tuesday/Thursday";
+                                    }
+                                    else if( $course2['day_id'] == "F"){
+                                        echo "Friday";
+                                    }
+                                    else {
+                                        echo $course2['day_id'];
+                                    }
+                                    ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['period_start']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['period_end']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="view_faculty_students.php?id=<?php echo $course2['crn']; ?>&course_name=<?php echo $course2['course_name']; ?>" class="btn_remove_hold">View Students <svg class="inline h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                    <circle cx="10" cy="10" r="7" />
+                                    <line x1="7" y1="10" x2="13" y2="10" />
+                                    <line x1="10" y1="7" x2="10" y2="13" />
+                                    <line x1="21" y1="21" x2="15" y2="15" />
+                                            </svg></a>
+                                    </td>
+                                </tr><?php endforeach; ?> </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">

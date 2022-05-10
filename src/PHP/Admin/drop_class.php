@@ -32,6 +32,9 @@ try {
     $query = "delete FROM class_section where crn = ".$crn.";";
     $stmt = $db->prepare($query);
     $stmt->execute();
+    $query = "delete FROM faculty_history where crn = ".$crn.";";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
 ?> <script type="text/javascript">
     let timerInterval
     Swal.fire({
@@ -57,7 +60,7 @@ try {
             console.log('I was closed by the timer')
         }
     }).then(function() {
-        window.location = "home_master_scehdule.php";
+        window.location = "home_master_schedule.php";
     })
 </script> <?php
     

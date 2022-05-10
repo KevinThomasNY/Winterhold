@@ -202,7 +202,7 @@ $courses_statement->closeCursor();
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate"> Admin Homepage </span>
+                        <span class="ml-2 text-sm tracking-wide truncate"> Student Homepage </span>
                     </a>
                 </li>
                 <li>
@@ -276,7 +276,7 @@ $courses_statement->closeCursor();
                     </a>
                 </li>
                 <li>
-                    <a href="home_calendar.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_transcript.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -285,11 +285,11 @@ $courses_statement->closeCursor();
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Students</span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Transcript</span>
                     </a>
                 </li>
                 <li>
-                    <a href="home_calendar.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_degree.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -298,11 +298,11 @@ $courses_statement->closeCursor();
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Faculty</span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Degree Audit</span>
                     </a>
                 </li>
                 <li>
-                    <a href="view_hold.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_holds.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -312,6 +312,19 @@ $courses_statement->closeCursor();
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">View Holds</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="view_current_schedule.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Current Scedule</span>
                     </a>
                 </li>
                 <li>

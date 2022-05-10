@@ -266,7 +266,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
                     </a>
                 </li>
                 <li>
-                    <a href="view_students.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_transcript.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -275,11 +275,11 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Students</span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Transcript</span>
                     </a>
                 </li>
                 <li>
-                    <a href="view_faculty.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_degree.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -288,11 +288,11 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">View Faculty</span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Degree Audit</span>
                     </a>
                 </li>
                 <li>
-                    <a href="view_hold.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <a href="view_holds.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -302,6 +302,19 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">View Holds</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="view_current_schedule.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </span>
+                        <span class="ml-2 text-sm tracking-wide truncate">View Current Scedule</span>
                     </a>
                 </li>
                 <li>
