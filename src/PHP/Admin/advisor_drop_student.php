@@ -36,7 +36,7 @@ try {
 ?> <script type="text/javascript">
     let timerInterval
     Swal.fire({
-        title: 'Student Deleted Successfully...',
+        title: 'Student Removed Successfully...',
         allowOutsideClick: false,
         icon: "success",
         html: 'I will close in <b></b> milliseconds.',

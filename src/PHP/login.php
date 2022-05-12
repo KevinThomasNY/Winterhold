@@ -41,7 +41,7 @@ if(isset($_POST['submitBtnLogin'])) {
             header("location: ./Admin/admin.php");
         } 
         if($row['user_type'] == "Researcher"){
-            header("location: researcher.php");
+            header("location: ./Researcher/researcher.php");
         }       
       }
       else {
