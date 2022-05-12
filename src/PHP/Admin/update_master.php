@@ -180,7 +180,15 @@ $courses_statement->closeCursor();
                             }
                             else echo "No Seats Available";
                          ?> </td>
-                        <td><a class="font-medium text-blue-600  hover:underline" href="drop_class.php?id=<?php echo $course['crn'] ?>"> Edit Class</a></td>
+                        <td> <form action="update_class.php" method="post">
+                                        <input type="hidden" name="crn" value="<?php echo $course['crn'] ?>" />
+                                        <input type="hidden" name="first_name" value="<?php echo $course['first_name'] ?>" />
+                                        <input type="hidden" name="last_name" value="<?php echo $course['last_name'] ?>" />
+                                        <input type="hidden" name="day_id" value="<?php echo $course['day_id'] ?>" />
+                                        <input type="hidden" name="period_start" value="<?php echo $course['period_start'] ?>" />
+                                        <input type="hidden" name="period_end" value="<?php echo$course['period_end'] ?>" />
+                                        <input type="submit" name="whatever" value="Edit" id="hyperlink-style-button" />
+                                    </form></td>
                         <td><a class="font-medium text-red-600  hover:underline" href="drop_class.php?id=<?php echo $course['crn'] ?>"> Delete Class</a></td>
                     </tr><?php endforeach; ?> </tbody>
             </table>

@@ -265,11 +265,11 @@ $courses_statement->closeCursor();
                 $query = "insert into faculty_history values ($faculty_id, $crn, 'SEMF2022', '$course_id')";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
-                echo "Class Added";
+                        ?> <h2 class="mx-8 mt-5 text-white"><span class="text-green-500">Class Added!</span></h2> <?php   
                 }
                 
                 else{
-                    echo "Another class is teaching in the same room at the same time.";
+                        ?> <h2 class="mx-8 mt-5 text-white">Another class is teaching in the same room at the same time. <span class="text-red-500"> Class was not added!</span></h2> <?php
                 }
             }
         ?>
