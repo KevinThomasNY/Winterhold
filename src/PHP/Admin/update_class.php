@@ -182,7 +182,7 @@ while ($rows = $result->fetch()){
                     ?> <h2 class="mx-8 mt-5 text-white">This Professor is currently teaching <?php echo $current_classes; ?> classes</h2> <?php    
                     // echo "This Professor is currently teaching " . $current_classes . " classes";
                     // echo "<br>";
-                    if($current_classes == 2 || $current_classes == 4){
+                    if((($current_classes == 2) && ($faculty_id != $f_faculty_id)) || (($current_classes == 4) && ($faculty_id != $f_faculty_id)) ){
                     ?> <h2 class="mx-8 mt-5 text-white">This Professor's schedule is currently full. <span class="text-red-500"> Select another professor.</span></h2> <?php  
                         // echo "This Professor's schedule is currently full. Select another professor.";
                         // echo "<br>";
