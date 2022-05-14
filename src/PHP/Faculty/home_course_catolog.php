@@ -73,6 +73,63 @@ $courses_statement->closeCursor();
             </div>
         </nav>
     </header>
+    <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <!-- add a select box containing options -->
+        <!-- for SELECT query -->
+        <h2 class="text-white">Select Department:</h2>
+        <div class="relative inline-block w-100 text-gray-700">
+            <select id="select" name="department_name" class=" w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                <option value="'All Departments'">All Departments</option>
+                <option value="'Accounting, Taxation & Business Law'">Accounting, Taxation & Business Law</option>
+                <option value="'American Studies/Media & Communications'">American Studies/Media & Communications</option>
+                <option value="'Biological Sciences'">Biological Sciences</option>
+                <option value="'English'">English</option>
+                <option value="'Exceptional Education & Learning'">Exceptional Education & Learning</option>
+                <option value="'History & Philosophy'">History & Philosophy</option>
+                <option value="'Mathematics, Computer & Information Science'">Mathematics, Computer & Information Science</option>
+                <option value="'Modern Languages'">Modern Languages</option>
+                <option value="'Politics, Economics & Law'">Politics, Economics & Law</option>
+                <option value="'Psychology'">Psychology</option>
+                <option value="'Public Health'">Public Health</option>
+                <option value="'Visual Arts'">Visual Arts</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                </svg>
+            </div>
+        </div>
+        <input class="block mt-5" type="submit" value="Submit"></p>
+    </form>
+    <script type="text/javascript">
+        document.getElementById('select').value = "<?php echo $_POST['department_name'];?>";
+    </script> <?php
+    if(isset($_POST['department_name'])){
+        $dep_name = $_POST['department_name'];
+        if($dep_name == "'All Departments'"){
+            $query_courses = 'select course.course_id, course.course_credits, course.course_name, department.department_name
+                    from course
+                    inner join department on course.department_id = department.department_id
+                    order by department.department_name;';
+
+            $courses_statement = $db->prepare($query_courses);
+            $courses_statement->execute();
+            $courses = $courses_statement->fetchAll();
+            $courses_statement->closeCursor();
+        }
+        else{
+            $query_courses = 'select course.course_id, course.course_credits, course.course_name, department.department_name
+                    from course
+                    inner join department on course.department_id = department.department_id
+                    where department.department_name = '." $dep_name ". ';';
+            $courses_statement = $db->prepare($query_courses);
+            $courses_statement->execute();
+            $courses = $courses_statement->fetchAll();
+            $courses_statement->closeCursor();
+        }
+    }
+    ?>
+
     <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Course Catolog</span>
     <div class="mx-8 flex flex-col">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

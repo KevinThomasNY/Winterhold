@@ -8,6 +8,8 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 include("../db.php");
 
 
+
+
 $query_courses = 'select user.user_id, user.first_name, user.last_name, user.date_of_birth, user.address, user.city, user.state, user.zip, user.user_type, login.email, login.password from user inner join login on login.user_id = user.user_id where user.user_type = "Student";';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
@@ -78,6 +80,7 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
+
         <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800"><?php 
             if(!isset($_POST['user_type'])){ 
                echo 'Viewing All Students' ?> <?php } else { 

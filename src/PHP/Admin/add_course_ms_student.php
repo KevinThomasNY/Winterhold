@@ -7,7 +7,19 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 }
 include("../db.php");
 
+if(isset($_POST['department_name'])){
+    $student_id = $_POST['student_id']; 
+}else{
+    $student_id = $_GET['id'];
+}
+//Get student information
+$result = $db->query('select * from user
+where user.user_id = '.$student_id.';');
 
+while ($rows = $result->fetch()){
+$first_name = $rows['first_name'];
+$last_name = $rows['last_name'];
+}
 $query_courses = 'select class_section.crn, class_section.course_name, course.course_id, department.department_name,  class_section.section, user.first_name, user.last_name, building.building_name, room.room_number, ts_day.day_id, period.period_start, period.period_end, semester.semester_name, class_section.available_seats   from class_section
 inner join department_faculty on class_section.faculty_id = department_faculty.faculty_id
 inner join department on department_faculty.department_id = department.department_id
@@ -121,8 +133,9 @@ $courses_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        <h1 class="mx-8 mt-3 text-white">Add a class to Student</h1>
+        <h1 class="mx-8 mt-3 text-2xl text-white">Here you can add a class to <?php echo $first_name." " . $last_name . " 's Schedule"; ?></h1>
         <form class="m-8" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <input type="hidden" name="student_id" value="<?= $student_id; ?>" />
             <div class="m-4"></div>
             <div class="relative inline-block w-100 text-gray-700">
                 <h2 class="text-white">Select Department:</h2>
@@ -213,8 +226,8 @@ $courses_statement->closeCursor();
                         <th> DAY </th>
                         <th> Start Time </th>
                         <th> End Time </th>
-                        <th> Semester </th>
                         <th> Avaliable Seats </th>
+                        <th> Add Class </th>
                     </tr>
                 </thead>
                 <tbody> <?php foreach ($courses as $course) : ?> <tr class="hover:bg-gray-50">
@@ -229,10 +242,6 @@ $courses_statement->closeCursor();
                         <td><?php echo $course['day_id']; ?> </td>
                         <td><?php echo $course['period_start']; ?> </td>
                         <td><?php echo $course['period_end']; ?> </td>
-                        <td><?php
-                        $str = $course['semester_name'];
-                        echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
-                        ?> </td>
                         <td><?php
                         $result = $db->query('SELECT count(crn)
                         FROM student_history
@@ -253,6 +262,9 @@ $courses_statement->closeCursor();
                             }
                             else echo "No Seats Available";
                          ?> </td>
+                        <td>
+                            <a href="insert_class_student.php?crn=<?php echo $course['crn']; ?>&student_id=<?php echo $student_id; ?>" class="text-blue-600">Add Class </a>
+                        </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
         </div>

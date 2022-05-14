@@ -157,7 +157,7 @@ $courses_statement2->closeCursor();
             </div>
         </div>
         <!-- Add class too Fall 2022 btn -->
-        <button type="button" class="block mx-8  text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none dark:focus:ring-blue-800"><a href="add_course_ms_student.php">Add Class For Fall 2022 <svg class="inline h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />  <line x1="12" y1="8" x2="12" y2="16" />  <line x1="8" y1="12" x2="16" y2="12" /></svg> </a></button>
+        <button type="button" class="block mx-8  text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none dark:focus:ring-blue-800"><a href="add_course_ms_student.php?id=<?php echo $student_id ?>">Add Class For Fall 2022 <svg class="inline h-5 w-5 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />  <line x1="12" y1="8" x2="12" y2="16" />  <line x1="8" y1="12" x2="16" y2="12" /></svg> </a></button>
         <span class=" mx-8 my-4 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Fall 2022 Schedule</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

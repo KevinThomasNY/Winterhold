@@ -1,7 +1,6 @@
 <!-- Admin Home Page
     This page displays the Admins Name & email 
--->
-<?php 
+--> <?php 
 session_start();
 if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
   #echo '<h1>Welcome '.$_SESSION['sess_first_name']. " " .$_SESSION['sess_last_name']. '</h1>';
@@ -18,11 +17,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome <?php echo $_SESSION['sess_first_name'] ?></title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="../../resources/images/favicon.png"
-    />
+    <link rel="shortcut icon" type="image/png" href="../../resources/images/favicon.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/home.css" />
 </head>
@@ -87,7 +82,10 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li>
-                    <a href="#" class="mr-4 hover:underline md:mr-6 ">Back To Top</a>
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="stats.php">Winterhold Statistics <svg class="inline h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </a></button>
                 </li>
             </ul>
         </footer>
