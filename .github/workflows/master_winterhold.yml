@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'winterhold'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_083173B3373C40AFAC8A7924ADBAF3E7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CDF140B8F62E4B69B3C6244EB5C8161D }}
           package: .
