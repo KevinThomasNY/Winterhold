@@ -10,11 +10,11 @@ include("../db.php");
 //get variables from form in view_student.php
 $student_id = $_SESSION['sess_user_id'];
 
-$query_user = 'select user.user_id,user.first_name,user.last_name, student.student_type, hold.hold_type, student_hold.date_added from student_hold
-inner join hold on hold.hold_id = student_hold.hold_id
-inner join user on user.user_id = student_hold.student_id
-inner join student on user.user_id = student.student_id
-where user.user_id = '. $student_id .';';
+$query_user = 'select user.first_name, user.last_name, advisor.date_of_assignment, department.department_name  from advisor
+inner join user on user.user_id = advisor.faculty_id
+inner join department_faculty on department_faculty.faculty_id = advisor.faculty_id
+inner join department on department.department_id = department_faculty.department_id
+where advisor.student_id = '. $student_id .';';
 $user_statement = $db->prepare($query_user);
 $user_statement->execute();
 $users = $user_statement->fetchAll();
@@ -29,7 +29,7 @@ $user_statement->closeCursor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Holds</title>
+    <title>Advisor</title>
     <link
       rel="shortcut icon"
       type="image/png"
@@ -37,7 +37,6 @@ $user_statement->closeCursor();
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../css/home.css" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -76,7 +75,7 @@ $user_statement->closeCursor();
                 </div>
             </nav>
         </header>
-        <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Student Hold</span>
+        <span class="ml-8 bg-blue-100 text-blue-800 text-lg font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Advisor</span>
         <div class="mx-8 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -85,21 +84,15 @@ $user_statement->closeCursor();
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
 
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Student ID </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Name </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Student Type </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Hold Type </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Date Hold Assigned </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Advisor's Name </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Date Assigned </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Advisor's Department: </th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach ($users as $user) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-
-
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['user_id']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['first_name'] . " " . $user['last_name']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['student_type']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['hold_type']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['date_added']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['date_of_assignment']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $user['department_name']; ?> </td>
 
                                 </tr><?php endforeach; ?> </tbody>
                         </table>
@@ -107,20 +100,6 @@ $user_statement->closeCursor();
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            let x = document.getElementById("myTable").rows.length;
-            if (x == 1) {
-                Swal.fire({
-                    title: 'No Hold!',
-                    text: "You do not have a hold on your account.",
-                    icon: 'info',
-                    type: "warning",
-                    confirmButtonText: 'Ok',
-                }).then(function() {
-                    window.location = "student.php";
-                });
-            }
-        </script>
         <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">

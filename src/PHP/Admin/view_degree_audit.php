@@ -111,15 +111,17 @@ while ($rows6 = $result6->fetch()){
 $inprogressCoursesArray[] = $rows6['course_id'];
 }
 //Get Minor Information
+$minor_query_info = $db->prepare("select * from student_minor
+inner join minor on student_minor.minor_id = minor.minor_id where student_id = $student_id;");
+$minor_query_info->execute();
+$count_minor = $minor_query_info->rowCount();
 $minor_id = null;
-$result = $db->query('SELECT minor.minor_id, minor.minor_name
-FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id
-WHERE EXISTS
-(SELECT minor.minor_id, minor.minor_name FROM student_minor inner join minor on student_minor.minor_id = minor.minor_id WHERE student_id = '.$student_id.');');
-
-while ($rows = $result->fetch()){
-    $minor_id = $rows['minor_id'];
-    $minor_name = $rows['minor_name'];
+$minor_name = null;
+if($count_minor > 0){
+    while ($rows = $minor_query_info->fetch()){
+        $minor_id = $rows['minor_id'];
+        $minor_name = $rows['minor_name'];
+    }
 }
 //Below is the minor requirements query
 if($minor_id != null){

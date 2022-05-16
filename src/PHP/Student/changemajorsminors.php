@@ -7,7 +7,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 }
 include("../db.php");
 
-$student_id = $_GET['student_id'];
+$student_id = $_SESSION['sess_user_id'];
 
 $query_courses = 'select * from major inner join department on major.department_id = department.department_id;';
 $courses_statement = $db->prepare($query_courses);
@@ -41,15 +41,15 @@ $courses_statement->closeCursor();
     {
         $major_id = trim($_POST['major_id']);
         $minor_id = trim($_POST['minor_id']);
-        $student_id = trim($_POST['student_id']);
+        $student_id = $_SESSION['sess_user_id'];
 
-if (($major_id != 0) && ($minor_id == 0))
+        if (($major_id != 0) && ($minor_id == 0))
         {
             $date = date("m/d/Y");
             $query = "update `student_major` set major_id = $major_id where student_id = $student_id";
             $stmt = $db->prepare($query);
             $stmt->execute();
-            header('location:./view_students.php');
+            header('location:./view_degree.php');
             die();
         }
         else if (($major_id == 0) && ($minor_id != 0)){
@@ -63,13 +63,13 @@ if (($major_id != 0) && ($minor_id == 0))
                 $stmt = $db->prepare($query);
                 $stmt->execute();
                 echo $student_id;
-                header('location:./view_students.php');
+                header('location:./view_degree.php');
                 die();
             }else{
                 $query = "insert into student_minor (minor_id, student_id, date_added) values ($minor_id, $student_id, '$date')";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
-                header('location:./view_students.php');
+                header('location:./view_degree.php');
                 die();
             }
         }
@@ -87,18 +87,18 @@ if (($major_id != 0) && ($minor_id == 0))
                 $query = "update `student_minor` set minor_id = $minor_id where student_id = $student_id";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
-                header('location:./view_students.php');
+                header('location:./view_degree.php');
                 die();
             }else{
                 $query = "insert into student_minor (minor_id, student_id, date_added) values ($minor_id, $student_id, '$date')";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
-                header('location:./view_students.php');
+                header('location:./view_degree.php');
                 die();
             }
         }
 
-        header('location:./view_students.php');
+        header('location:./view_degree.php');
         die();
     }
 ?> <style>

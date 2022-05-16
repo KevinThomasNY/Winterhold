@@ -263,7 +263,20 @@ $courses_statement->closeCursor();
                             else echo "No Seats Available";
                          ?> </td>
                         <td>
+                            <?php
+                        $result = $db->query('SELECT count(crn)
+                        FROM student_history
+                        WHERE crn = '.$course['crn'].';');
+
+                        while ($rows = $result->fetch()){
+                            $numCrn = $rows['count(crn)'];
+                        }
+                        $avaSeats =    $course['available_seats'] - $numCrn;
+                            if($avaSeats > 0){  ?>
                             <a href="insert_class_student.php?crn=<?php echo $course['crn']; ?>&student_id=<?php echo $student_id; ?>" class="text-blue-600">Add Class </a>
+                            <?php }else{
+                                echo "No more avaiable seats";
+                            }?>
                         </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
