@@ -9,11 +9,17 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 include("../db.php");
 
 
+// $query_courses = 'select Distinct advisor.faculty_id, user.first_name, user.last_name, department.department_name, count(*) as number_of_students from advisor inner join department_faculty on
+// department_faculty.faculty_id = advisor.faculty_id
+// inner join department on department.department_id = department_faculty.department_id
+// inner join user on user.user_id = advisor.faculty_id
+// group by advisor.faculty_id
+// order by department_name;';
 $query_courses = 'select Distinct advisor.faculty_id, user.first_name, user.last_name, department.department_name, count(*) as number_of_students from advisor inner join department_faculty on
 department_faculty.faculty_id = advisor.faculty_id
 inner join department on department.department_id = department_faculty.department_id
 inner join user on user.user_id = advisor.faculty_id
-group by advisor.faculty_id
+group by advisor.faculty_id,  user.first_name, user.last_name, department.department_name
 order by department_name;';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
@@ -106,7 +112,7 @@ $courses_statement->closeCursor();
                         department_faculty.faculty_id = advisor.faculty_id
                         inner join department on department.department_id = department_faculty.department_id
                         inner join user on user.user_id = advisor.faculty_id
-                        group by advisor.faculty_id
+                        group by advisor.faculty_id,  user.first_name, user.last_name, department.department_name
                         order by department_name;';
                         $courses_statement = $db->prepare($query_courses);
                         $courses_statement->execute();
@@ -120,7 +126,7 @@ $courses_statement->closeCursor();
                         inner join department on department.department_id = department_faculty.department_id
                         inner join user on user.user_id = advisor.faculty_id
                         where department.department_name = '.$dep_name.'
-                        group by advisor.faculty_id
+                        group by advisor.faculty_id,  user.first_name, user.last_name, department.department_name
                         order by department_name;';
                         $courses_statement = $db->prepare($query_courses);
                         $courses_statement->execute();

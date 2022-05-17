@@ -110,9 +110,7 @@ $courses_statement2->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> CRN </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Day</th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Start Time</th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> End Time</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Class Info</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Building Name</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Room Number</th>
                                 </tr>
@@ -121,32 +119,8 @@ $courses_statement2->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['crn']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_id']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php if( $course['day_id'] == "MT"){
-                                        echo "Monday/Tuesday";
-                                    }else if( $course['day_id'] == "TW"){
-                                        echo "Tuesday/Wednesday";
-                                    }
-                                    else if( $course['day_id'] == "WR"){
-                                        echo "Wednesday/Thursday";
-                                    }
-                                    else if( $course['day_id'] == "RF"){
-                                        echo "Thursday/Friday";
-                                    }
-                                    else if( $course['day_id'] == "MW"){
-                                        echo "Monday/Wednesday";
-                                    }
-                                    else if( $course['day_id'] == "TR"){
-                                        echo "Tuesday/Thursday";
-                                    }
-                                    else if( $course['day_id'] == "F"){
-                                        echo "Friday";
-                                    }
-                                    else{
-                                        echo $course['day_id'];
-                                    }
-                                    ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_start']; ?> </td>
-                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['period_end']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap hover:underline dark:text-white"><a href="class_info.php?crn=<?php echo $course['crn'];?>" >Info</a>
+                                    </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['building_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['room_number']; ?> </td>
 

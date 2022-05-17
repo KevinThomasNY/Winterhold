@@ -7,7 +7,7 @@ if(isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] != "") {
 }
 include("../db.php");
 //get variables from form in view_student.php
-$user_id = trim($_GET['id']);
+$user_id = $_SESSION['sess_user_id'];
 
 $query_courses = 'select faculty_history.crn, course.course_name, course.course_id, course.course_credits, class_section.section, ts_day.day_id, period.period_start, period.period_end from faculty_history
 inner join class_section on faculty_history.crn = class_section.crn
@@ -153,7 +153,7 @@ $courses_statement2->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Course Credits</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Section</th>
-                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Info</th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Class Info</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">View Students</th>
                                 </tr>
                             </thead>  <tbody> <?php foreach ($courses2 as $course2) : ?> <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
@@ -178,12 +178,34 @@ $courses_statement2->closeCursor();
                 </div>
             </div>
         </div>
+        <?php
+        //The below query is used to in the student information section
+        $result = $db->query('select f_rank from faculty where faculty_id = '.$user_id.'');
+
+        while ($rows = $result->fetch()){
+        $f_rank = $rows['f_rank'];
+        }
+        ?>
+        <script type="text/javascript">
+            let x = document.getElementById("myTable").rows.length;
+            if (x == 1) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: "<?php echo "You are the Deparmtent " . $f_rank . ", therefore, you don't have any classes." ?>",
+                    icon: 'info',
+                    type: "warning",
+                    confirmButtonText: 'Ok',
+                }).then(function() {
+                    window.location = "faculty.php";
+                });
+            }
+        </script>
         <footer class=" p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
             <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="../../home.html" class="hover:underline">Winterhold University</a>. All Rights Reserved. </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-                <li>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><a href="view_faculty.php">Go Back To View Faculty</a></button>
-                </li>
+            <li>
+                <a href="#" class="mr-4 hover:underline md:mr-6 ">Back To Top</a>
+            </li>
             </ul>
         </footer>
     </div>

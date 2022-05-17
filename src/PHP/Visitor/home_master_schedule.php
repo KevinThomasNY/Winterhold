@@ -378,8 +378,25 @@ $courses_statement->closeCursor();
                         echo substr($str, 0, strlen($str) - 2). ' '. substr($str,strlen($str)-2);
                         ?> </td>
                         <td><?php
-                        $rand = rand(0,29);
-                        echo ($course['available_seats'] - $rand); ?> </td>
+                        $result = $db->query('SELECT count(crn)
+                        FROM student_history
+                        WHERE crn = '.$course['crn'].';');
+
+                        while ($rows = $result->fetch()){
+                            $numCrn = $rows['count(crn)'];
+                        }
+                            if( $course['semester_name'] == "Fall22"){
+                                echo $course['available_seats'];
+                            }else if($course['semester_name'] == "Spring22"){
+                                $avaSeats =    $course['available_seats'] - $numCrn;
+                                if($avaSeats < 0 ){
+                                    echo "0";
+                                }else{
+                                    echo $avaSeats;
+                                }
+                            }
+                            else echo "No Seats Available";
+                         ?> </td>
                     </tr><?php endforeach; ?> </tbody>
             </table>
         </div>

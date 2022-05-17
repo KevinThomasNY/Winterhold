@@ -6,52 +6,36 @@ include("db.php");
 $msg = ""; 
 if(isset($_POST['submitBtnLogin'])) {
   $username = trim($_POST['username']);
-  $password = trim($_POST['password']);
-  if($username != "" && $password != "") {
+  if($username != "") {
     try {
-      #$query = "select * from login where `email`=:username and `password`=:password";
       $query = "select *
       from user
       INNER JOIN login
       ON user.user_id = login.user_id
-      where login.email =:username AND login.password =:password ";
+      where login.email =:username";
 
       $stmt = $db->prepare($query);
       $stmt->bindParam('username', $username, PDO::PARAM_STR);
-      $stmt->bindValue('password', $password, PDO::PARAM_STR);
       $stmt->execute();
       $count = $stmt->rowCount();
       $row   = $stmt->fetch(PDO::FETCH_ASSOC);
-      #if user_id == password 
       if($count == 1 && !empty($row)) { 
 
-        $_SESSION['sess_user_id']   = $row['user_id'];
-        $_SESSION['sess_first_name'] = $row['first_name'];
-        $_SESSION['sess_last_name'] = $row['last_name'];
-        $_SESSION['sess_user_type'] = $row['user_type'];
-        $_SESSION['sess_email'] = $row['email'];
-
-        if($row['user_type'] == "Student"){
-            header("location: ./Student/student.php");
+        $email = $row['email'];
+        $query = "insert into forgot_pw value ('$email');";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $letUser = "The Admin is notified that your password needs reseting. The admin will reset your password in 1-3 business days.";
+        echo $letUser;
         }
-        if($row['user_type'] == "Faculty"){
-            header("location: ./Faculty/faculty.php");
-        }
-        if($row['user_type'] == "Admin"){
-            header("location: ./Admin/admin.php");
-        } 
-        if($row['user_type'] == "Researcher"){
-            header("location: ./Researcher/researcher.php");
-        }       
-      }
       else {
-        $msg = "Invalid email or password!";
+        $msg = "Invalid email!";
       }
     } catch (PDOException $e) {
       echo "Error : ".$e->getMessage();
     }
   } else {
-    $msg = "Both fields are required!";
+    $msg = "Email Empty";
   }
 }
 ?>
@@ -62,7 +46,7 @@ if(isset($_POST['submitBtnLogin'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Login</title>
+   <title>Forgot Password</title>
    <link rel="stylesheet" href="../css/home.css">
 </head>
 <body>
@@ -83,20 +67,10 @@ if(isset($_POST['submitBtnLogin'])) {
         </nav>
       </header>
       <section class="login">
-        <h1>Login</h1>
+        <h1>Forgot Password</h1>
         <form method="post">
           <label for="fname">Email address</label><br />
           <input type="email" id="username" name="username" required  /><br />
-          <br />
-          <label for="lname">Password</label><br />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            autocomplete="off"
-          /><br /><br />
-          <a href="forgot.php">Forgot your password?</a><br />
           <br />
             <input type="submit" name="submitBtnLogin" id="submitBtnLogin" value="Submit" />
             <span class="loginMsg"><?php echo @$msg;?></span>
