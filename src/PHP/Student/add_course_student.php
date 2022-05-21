@@ -9,7 +9,7 @@ include("../db.php");
 
 $student_id = $_SESSION['sess_user_id'];;
 
-$query_courses = 'select class_section.crn, course.course_name, course.course_id, ts_day.day_id, period.period_start, period.period_end, building.building_name, room.room_number from student_history
+$query_courses = 'select class_section.crn, user.first_name, user.last_name, course.course_name, course.course_id, ts_day.day_id, period.period_start, period.period_end, building.building_name, room.room_number from student_history
 inner join student_major on student_history.student_id = student_major.student_id
 inner join major on major.major_id = student_major.major_id
 inner join semester on semester.semester_id = student_history.semester_id
@@ -20,13 +20,14 @@ inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
 inner join ts_day on time_slot.day_id = ts_day.time_slot_day
 inner join period on time_slot.period_id = period.period_id
 inner join room on class_section.room_id = room.room_id
+inner join user on user.user_id = class_section.faculty_id
 where student_history.semester_id = "SEMS2022" and student_history.student_id = '.$student_id.';';
 $courses_statement = $db->prepare($query_courses);
 $courses_statement->execute();
 $courses = $courses_statement->fetchAll();
 $courses_statement->closeCursor();
 // Fall 2022 query
-$query_courses2 = 'select class_section.crn, course.course_name, course.course_id, ts_day.day_id, period.period_start, period.period_end, building.building_name, room.room_number from student_history
+$query_courses2 = 'select class_section.crn, user.first_name, user.last_name, course.course_name, course.course_id, ts_day.day_id, period.period_start, period.period_end, building.building_name, room.room_number from student_history
 inner join student_major on student_history.student_id = student_major.student_id
 inner join major on major.major_id = student_major.major_id
 inner join semester on semester.semester_id = student_history.semester_id
@@ -37,6 +38,7 @@ inner join time_slot on class_section.time_slot_id = time_slot.time_slot_id
 inner join ts_day on time_slot.day_id = ts_day.time_slot_day
 inner join period on time_slot.period_id = period.period_id
 inner join room on class_section.room_id = room.room_id
+inner join user on user.user_id = class_section.faculty_id
 where student_history.semester_id = "SEMF2022" and student_history.student_id = '.$student_id.';';
 $courses_statement2 = $db->prepare($query_courses2);
 $courses_statement2->execute();
@@ -110,6 +112,7 @@ $courses_statement2->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> CRN </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Professor </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Class Info</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Building Name</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Room Number</th>
@@ -119,6 +122,7 @@ $courses_statement2->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['crn']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['course_id']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['first_name']." ".$course['last_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap hover:underline dark:text-white"><a href="class_info.php?crn=<?php echo $course['crn'];?>" >Info</a>
                                     </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course['building_name']; ?> </td>
@@ -143,6 +147,7 @@ $courses_statement2->closeCursor();
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> CRN </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course Name </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Course # </th>
+                                    <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Professor </th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Day</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> Start Time</th>
                                     <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"> End Time</th>
@@ -155,6 +160,7 @@ $courses_statement2->closeCursor();
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['crn']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['course_id']; ?> </td>
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php echo $course2['first_name']." ".$course['last_name']; ?> </td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><?php if( $course2['day_id'] == "MT"){
                                         echo "Monday/Tuesday";
                                     }else if( $course2['day_id'] == "TW"){

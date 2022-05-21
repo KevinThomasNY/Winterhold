@@ -10,7 +10,7 @@ include("../db.php");
 if(isset($_POST['department_name'])){
     $student_id = $_POST['student_id']; 
 }else{
-    $student_id = $_GET['id'];
+    $student_id = $_SESSION['sess_user_id'];
 }
 //Get student information
 $result = $db->query('select * from user
