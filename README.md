@@ -4,6 +4,7 @@
 - [Project Description](#project-description)
 - [Client Software](#client-software)
 - [Server-Side Software](#server-side-software)
+- [Download 3D Model](#download-3d-model)
 
 ## About: 
 Web-based Registration System for a University
@@ -31,14 +32,12 @@ This is a full stack website built for a System Design and Implementation class.
 <img align="left" alt="CSS3" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" style="padding-right:10px;" />
 <img align="left" alt="JavaScript" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="padding-right:10px;" />
 <img align="left" alt="PHP" width="31px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" style="padding-right:10px;" />
-<img align="left" alt="sql" width="31px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" style="padding-right:10px;" />
+<img align="left" alt="sql" width="31px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" style="padding-right:10px;" /> <br>
 
+## Download 3D Model:
+- Download: [Click Here](https://github.com/KevinThomasNY/Winterhold-University/blob/master/src/resources/models/Winterhold3DModel.glb)
+- The file is in .glb format
+- You can open the file in Blender or other 3D software
+-  The model is 100% free and you can use it without restrictions
 
-      
-          
-
-          
-
-
-
-
+<img src="src/resources/images/logininHome.png">                
